@@ -9,7 +9,7 @@
 // =============================================================================
 
 // ─── VERSION ─ bump this string on every deploy ──────────────────────────────
-const CACHE_VERSION = '810d3ed';   
+const CACHE_VERSION = 'a23cff8';   
 const CACHE_NAME    = `korean-vocab-${CACHE_VERSION}`;
 
 // ---------------------------------------------------------------------------
