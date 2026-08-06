@@ -196,7 +196,7 @@
 
 .result-feedback {
   font-family: var(--font-korean);
-  font-size: var(--font-size-md);
+  font-size: var(--font-size-lg);
   color: var(--color-text);
   line-height: 1.5;
   margin-bottom: var(--space-sm);
