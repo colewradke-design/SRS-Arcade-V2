@@ -1,7 +1,8 @@
 /**
  * core/auth.js
- * Firebase Authentication module for Korean Vocabulary PWA.
+ * Firebase Authentication + App Check module for Korean Vocabulary PWA.
  * Handles anonymous sign-in on first launch + optional email/password accounts.
+ * App Check (reCAPTCHA v3) protects AI / Gemini endpoints from abuse.
  * Follows project rules: vanilla ES modules, no bundler, CDN imports only.
  */
 
@@ -15,6 +16,10 @@ import {
   linkWithCredential,
   EmailAuthProvider
 } from "https://www.gstatic.com/firebasejs/12.17.0/firebase-auth.js";
+import {
+  initializeAppCheck,
+  ReCaptchaV3Provider
+} from "https://www.gstatic.com/firebasejs/12.17.0/firebase-app-check.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCt7Q-rjYndZY_jjJyGPKxMU49wFb7rmJ4",
@@ -29,6 +34,13 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+
+// App Check — reCAPTCHA v3 (invisible). Must run before any Firebase service calls.
+const appCheck = initializeAppCheck(app, {
+  provider: new ReCaptchaV3Provider('6LfVy3ctAAAAAJptiObp1SotOWJocbd5FWsRrCgl'),
+  isTokenAutoRefreshEnabled: true
+});
+
 const auth = getAuth(app);
 
 // ============================================================
