@@ -2,15 +2,26 @@
  * styles/screens/sentence-settings.css
  * Complexity picker for Sentence Mode.
  * All colors via CSS custom properties. Border radius ≤ 4px. Touch targets ≥ 48px.
+ * Content column matches main-menu / session-settings (420px → 460px desktop).
  */
 
 .sentence-settings-screen {
   display: flex;
   flex-direction: column;
+  align-items: center;          /* center the constrained column */
   min-height: 100%;
   padding: var(--space-md);
   background: var(--color-background);
   color: var(--color-text);
+  box-sizing: border-box;
+}
+
+/* Constrained content column — matches main-menu / session-settings */
+.sentence-settings-screen .config-header,
+.sentence-settings-screen .config-body,
+.sentence-settings-screen .config-actions {
+  width: 100%;
+  max-width: 420px;
 }
 
 .sentence-settings-screen .config-header {
@@ -23,12 +34,14 @@
   font-size: var(--font-size-xl);
   color: var(--color-primary);
   margin-bottom: var(--space-sm);
+  text-align: center;
 }
 
 .sentence-settings-screen .screen-subtitle {
   font-family: var(--font-display);
   font-size: var(--font-size-sm);
   color: var(--color-text-muted);
+  text-align: center;
 }
 
 .sentence-settings-screen .config-body {
@@ -43,19 +56,22 @@
   font-size: var(--font-size-sm);
   color: var(--color-secondary);
   letter-spacing: 1px;
+  text-align: center;
 }
 
 .sentence-settings-screen .complexity-grid {
   display: flex;
   flex-direction: column;
   gap: var(--space-sm);
+  width: 100%;
 }
 
 .sentence-settings-screen .complexity-card {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;          /* center content */
   justify-content: center;
+  width: 100%;
   min-height: 56px;
   padding: var(--space-md);
   background: var(--color-surface);
@@ -63,9 +79,10 @@
   border-radius: var(--border-radius-md);
   color: var(--color-text);
   font-family: var(--font-display);
-  text-align: left;
+  text-align: center;           /* all text centered */
   cursor: pointer;
   transition: border-color var(--transition-fast), background var(--transition-fast);
+  box-sizing: border-box;
 }
 
 .sentence-settings-screen .complexity-card.selected {
@@ -78,6 +95,7 @@
   font-size: var(--font-size-md);
   color: var(--color-text);
   margin-bottom: var(--space-xs);
+  text-align: center;
 }
 
 .sentence-settings-screen .complexity-card.selected .complexity-label {
@@ -88,6 +106,7 @@
   font-size: var(--font-size-sm);
   color: var(--color-text-muted);
   font-family: var(--font-display);
+  text-align: center;
 }
 
 .sentence-settings-screen .config-actions {
@@ -99,6 +118,7 @@
 }
 
 .sentence-settings-screen .btn {
+  width: 100%;                  /* fill the constrained column */
   min-height: 48px;
   font-family: var(--font-display);
   font-size: var(--font-size-md);
@@ -107,6 +127,8 @@
   background: var(--color-surface);
   color: var(--color-text);
   cursor: pointer;
+  text-align: center;
+  box-sizing: border-box;
 }
 
 .sentence-settings-screen .btn-primary {
@@ -117,4 +139,17 @@
 
 .sentence-settings-screen .btn:active {
   transform: scale(0.98);
+}
+
+/* Desktop — match main-menu column width */
+@media (min-width: 640px) {
+  .sentence-settings-screen {
+    padding: calc(var(--space-xl) + var(--space-lg)) var(--space-md) var(--space-xl);
+  }
+
+  .sentence-settings-screen .config-header,
+  .sentence-settings-screen .config-body,
+  .sentence-settings-screen .config-actions {
+    max-width: 460px;
+  }
 }
