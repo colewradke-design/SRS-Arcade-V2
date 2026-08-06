@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ko" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+
+    <!-- ─── PWA / Viewport ───────────────────────────────────────────── -->
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <meta name="theme-color" content="#0a0a14" />
+
+    <!-- Apple PWA -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Vocab Trainer" />
+    <link rel="apple-touch-icon" href="./assets/icons/icon-192.png" />
+
+    <!-- Android / Chrome PWA -->
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="application-name" content="Vocab Trainer" />
+
+    <!-- Open Graph / share card -->
+    <meta property="og:title" content="Vocab Trainer" />
+    <meta property="og:type"  content="website" />
+
+    <title>Vocab Trainer</title>
+
+    <!-- ─── PWA Manifest ─────────────────────────────────────────────── -->
+    <link rel="manifest" href="./manifest.json" />
+
+    <!-- ─── Google Fonts ─────────────────────────────────────────────── -->
+    <!--
+      Preconnect first to shorten the TLS handshake on first paint,
+      then load the stylesheet asynchronously so it never blocks render.
+      Press Start 2P  → all English UI, scores, timers, titles
+      Noto Sans KR    → all hangul (weights 400 / 700 / 900)
+    -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Noto+Sans+KR:wght@400;700;900&display=swap"
+    />
+
+    <!-- ─── Stylesheets (order matters — base → themes → layout) ─────── -->
+    <!--
+      base.css    CSS reset, :root custom properties, typography scale,
+                  CRT scanline overlay (body::after), utility classes.
+
+      themes.css  One class per theme (.theme-arcade, .theme-neo-geo, etc.)
+                  Each class overrides :root color variables only.
+
+      layout.css  Screen containers, shared component styles — buttons,
+                  segmented controls, HUD bars, word cards, banners.
+                  No color values here; references variables only.
+    -->
+    <link rel="stylesheet" href="./styles/base.css" />
+    <link rel="stylesheet" href="./styles/themes.css" />
+    <link rel="stylesheet" href="./styles/layout.css" />
+    <link rel="stylesheet" href="./styles/screens/session-settings.css" />
+    <link rel="stylesheet" href="./styles/screens/flashcard-options.css" />
+    <link rel="stylesheet" href="./styles/screens/main-menu.css" />
+    <link rel="stylesheet" href="./styles/screens/main-game.css" />
+    <link rel="stylesheet" href="./styles/screens/flashcard.css" />
+    <link rel="stylesheet" href="./styles/screens/master-deck.css" />
+    <link rel="stylesheet" href="./styles/screens/session-summary.css" />
+    <link rel="stylesheet" href="./styles/screens/options.css" />
+    <link rel="stylesheet" href="./styles/screens/custom-word.css" />
+    <link rel="stylesheet" href="./styles/screens/spelling-options.css" />
+    <link rel="stylesheet" href="./styles/screens/spelling-flashcard.css" />
+    <link rel="stylesheet" href="./styles/screens/spelling-wordsearch.css" />
+    <link rel="stylesheet" href="./styles/screens/onboarding.css" />
+    <link rel="stylesheet" href="./styles/screens/login.css" />
+    <link rel="stylesheet" href="./styles/screens/sentence-settings.css" />
+    <link rel="stylesheet" href="./styles/screens/sentence-mode.css" />
+
+  </head>
+
+  <body>
+    <!--
+      ═══════════════════════════════════════════════════════════════════
+      GLOBAL CRT SCANLINE OVERLAY
+      ═══════════════════════════════════════════════════════════════════
+      Rendered via body::after in base.css so it floats above every
+      screen without touching the component tree.
+
+        body::after {
+          content: '';
+          position: fixed;
+          inset: 0;
+          z-index: 9999;
+          pointer-events: none;
+          background: repeating-linear-gradient(
+            to bottom,
+            transparent           0px,
+            transparent           2px,
+            rgba(0, 0, 0, 0.18)   2px,
+            rgba(0, 0, 0, 0.18)   4px
+          );
+        }
+
+      The overlay must NOT be animated (arcade anti-pattern).
+      ═══════════════════════════════════════════════════════════════════
+
+      SINGLE APP MOUNT POINT
+      ═══════════════════════════════════════════════════════════════════
+      #app is the sole container for all screen divs.
+
+      The router works by:
+        1. Hiding every direct child div of #app.
+        2. Calling the target screen's init() function.
+        3. Showing the target screen's div.
+
+      Screen divs are injected here by their respective screen modules
+      (screens/*.js). No screen markup lives in index.html — this keeps
+      the shell lean and ensures each screen owns its own DOM structure.
+      ═══════════════════════════════════════════════════════════════════
+    -->
+    <div id="app" role="main" aria-live="polite" aria-atomic="false"></div>
+
+    <!--
+      ─── Entry Point ──────────────────────────────────────────────────
+      core/router.js is the module entry point.
+
+      It must:
+        • Register the service worker.
+        • Bootstrap the DB (db/db.js).
+        • Load the saved theme from settings-store and apply it to
+          document.documentElement before first paint.
+        • Resolve the initial screen (default: 'main-menu').
+        • Call navigate('main-menu') to mount the first screen.
+
+      type="module" gives us:
+        • ES module scope (no global pollution).
+        • Deferred execution — runs after the DOM is parsed, so #app
+          is guaranteed to exist when router.js first touches it.
+        • Static import graph for the whole app.
+    -->
+    <script src="https://cdn.jsdelivr.net/npm/dexie@3/dist/dexie.min.js"></script>
+    <script type="module" src="./core/router.js"></script>
+  </body>
+</html>

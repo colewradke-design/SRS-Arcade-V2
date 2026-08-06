@@ -1,0 +1,182 @@
+/* ==========================================================================
+   onboarding.css
+   Korean Vocabulary PWA — Onboarding / First Launch Flow
+   Follows exact arcade visual contract. All colors via CSS variables only.
+   Hard edges, 48px+ touch targets, Press Start 2P + Noto Sans KR.
+   ========================================================================== */
+
+.onboarding-screen {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  background-color: var(--color-background);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.onboarding-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: var(--space-xl) var(--space-md);
+  gap: var(--space-lg);
+}
+
+/* Step header */
+.onboarding-header {
+  text-align: center;
+  margin-bottom: var(--space-md);
+}
+
+.onboarding-header .screen-title {
+  font-size: var(--font-size-xl);
+  margin-bottom: var(--space-sm);
+}
+
+.onboarding-header .subtitle {
+  font-family: var(--font-body);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  letter-spacing: 0.04em;
+}
+
+/* Intro content */
+.intro-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  text-align: center;
+}
+
+.intro-content p {
+  font-size: var(--font-size-md);
+  line-height: 1.5;
+  color: var(--color-text);
+}
+
+.feature-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  text-align: left;
+  margin: var(--space-md) 0;
+}
+
+.feature-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  font-size: var(--font-size-sm);
+}
+
+.feature-item .icon {
+  font-family: var(--font-display);
+  color: var(--color-accent);
+  min-width: 24px;
+}
+
+/* Language selection */
+.language-option {
+  width: 100%;
+  max-width: 320px;
+  margin: 0 auto;
+  padding: var(--space-md);
+  border: 2px solid var(--color-primary);
+  border-radius: var(--border-radius-sm);
+  background: var(--color-surface);
+  color: var(--color-primary);
+  font-family: var(--font-display);
+  font-size: var(--font-size-md);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  min-height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-sm);
+}
+
+.language-option.selected {
+  background: var(--color-primary);
+  color: var(--color-background);
+  box-shadow: 0 0 12px var(--color-primary);
+}
+
+.language-note {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  text-align: center;
+  margin-top: var(--space-sm);
+}
+
+/* Assessment card area — reuses flashcard visual language */
+.assessment-card-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-lg) var(--space-md);
+  gap: var(--space-lg);
+}
+
+.assessment-progress {
+  font-family: var(--font-display);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* Result / placement screen */
+.placement-result {
+  text-align: center;
+  padding: var(--space-xl) var(--space-md);
+}
+
+.placement-result .big-number {
+  font-family: var(--font-display);
+  font-size: 48px;
+  color: var(--color-accent);
+  line-height: 1;
+  text-shadow: 0 0 6px var(--color-accent);
+}
+
+.placement-result .unit-label {
+  font-family: var(--font-display);
+  font-size: var(--font-size-xl);
+  color: var(--color-secondary);
+  margin: var(--space-md) 0;
+}
+
+/* Action buttons */
+.onboarding-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  margin-top: auto;
+  padding-top: var(--space-lg);
+}
+
+.onboarding-actions .btn {
+  min-height: 56px;
+  font-size: var(--font-size-md);
+}
+
+/* Assessment feedback */
+.assessment-feedback {
+  font-family: var(--font-display);
+  font-size: var(--font-size-sm);
+  color: var(--color-correct);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-top: var(--space-sm);
+}
+.assessment-feedback.fail {
+  color: var(--color-incorrect);
+}

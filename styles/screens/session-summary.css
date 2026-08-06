@@ -1,0 +1,293 @@
+/* =================================================================
+   session-summary.css
+   Korean Vocabulary PWA — Session Summary Screen
+   Arcade (Late 80s / Early 90s CRT) Aesthetic
+   -----------------------------------------------------------------
+   • All colors reference ONLY CSS custom properties (design tokens)
+   • No raw hex, rgb(), hsl(), or hardcoded color literals anywhere
+   • Hard edges (border-radius via --border-radius-sm)
+   • Neon glows via box-shadow using var(--color-*) 
+   • Pixel font via --font-display / --font-korean
+   • Scoped exclusively to .session-summary-screen root
+   • Touch targets ≥ 48px
+   • Consistent with layout.css .btn system + leitner utility classes
+   ================================================================= */
+
+/* Root container — full viewport, scrollable, arcade dark field */
+.session-summary-screen {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  padding: var(--space-lg) var(--space-md);
+  padding-bottom: calc(var(--space-xl) + 80px); /* safe area for floating buttons */
+  background-color: var(--color-background);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  box-sizing: border-box;
+}
+
+/* Screen header / title — attract-mode CRT energy */
+.session-summary-screen .summary-title {
+  font-family: var(--font-display);
+  font-size: var(--font-size-xl);
+  font-weight: normal;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  text-align: center;
+  margin: 0 0 var(--space-lg) 0;
+  color: var(--color-accent);
+  text-shadow: 
+    0 0 6px var(--color-accent),
+    0 0 14px var(--color-accent);
+  line-height: 1.1;
+}
+
+/* Stats grid — 3 key metrics at a glance */
+.session-summary-screen .stats-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-md);
+  margin-bottom: var(--space-xl);
+}
+
+@media (min-width: 520px) {
+  .session-summary-screen .stats-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.session-summary-screen .stat-card {
+  background-color: var(--color-surface);
+  border: 2px solid var(--color-primary);
+  border-radius: var(--border-radius-sm);
+  padding: var(--space-md) var(--space-sm);
+  text-align: center;
+  box-shadow: 0 0 8px var(--color-primary);
+  transition: transform var(--transition-speed), 
+              box-shadow var(--transition-speed);
+  user-select: none;
+}
+
+.session-summary-screen .stat-card:active {
+  transform: scale(0.96);
+  box-shadow: 0 0 4px var(--color-primary);
+}
+
+.session-summary-screen .stat-label {
+  font-family: var(--font-display);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: var(--space-xs);
+  line-height: 1;
+}
+
+.session-summary-screen .stat-value {
+  font-family: var(--font-display);
+  font-size: var(--font-size-xxl);
+  color: var(--color-accent);
+  line-height: 1;
+  text-shadow: 0 0 8px var(--color-accent);
+  margin-top: var(--space-xs);
+}
+
+/* Worst performing words section */
+.session-summary-screen .worst-section {
+  margin-bottom: var(--space-xl);
+}
+
+.session-summary-screen .section-title {
+  font-family: var(--font-display);
+  font-size: var(--font-size-lg);
+  color: var(--color-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 0 0 var(--space-md) 0;
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--color-text-muted);
+}
+
+/* Word list — vertical stack of neon-bordered cards */
+.session-summary-screen .word-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+/* Individual word card — inherits leitner color via JS-applied class */
+.session-summary-screen .word-card {
+  background-color: var(--color-surface);
+  border: 2px solid var(--color-text-muted);
+  border-radius: var(--border-radius-sm);
+  padding: var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  box-shadow: 0 0 6px var(--color-text-muted);
+  transition: box-shadow var(--transition-speed), 
+              border-color var(--transition-speed);
+  min-height: 48px; /* touch-friendly */
+}
+
+.session-summary-screen .word-card.leitner-1 {
+  border-color: var(--color-leitner-1);
+  box-shadow: 0 0 10px var(--color-leitner-1);
+}
+
+.session-summary-screen .word-card.leitner-2 {
+  border-color: var(--color-leitner-2);
+  box-shadow: 0 0 10px var(--color-leitner-2);
+}
+
+.session-summary-screen .word-card.leitner-3 {
+  border-color: var(--color-leitner-3);
+  box-shadow: 0 0 10px var(--color-leitner-3);
+}
+
+.session-summary-screen .word-card.leitner-4 {
+  border-color: var(--color-leitner-4);
+  box-shadow: 0 0 10px var(--color-leitner-4);
+}
+
+.session-summary-screen .word-card.leitner-5 {
+  border-color: var(--color-leitner-5);
+  box-shadow: 0 0 10px var(--color-leitner-5);
+}
+
+/* Hangul — large, bold, high-contrast Korean */
+.session-summary-screen .word-hangul {
+  font-family: var(--font-korean);
+  font-size: var(--font-size-xl);
+  font-weight: 900;
+  color: var(--color-text);
+  line-height: 1.1;
+}
+
+/* English translation */
+.session-summary-screen .word-english {
+  font-family: var(--font-body);
+  font-size: var(--font-size-md);
+  color: var(--color-text-muted);
+  line-height: 1.3;
+}
+
+/* Meta line (seen / correct counts) */
+.session-summary-screen .word-meta {
+  font-family: var(--font-display);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  margin-top: var(--space-xs);
+  letter-spacing: 0.04em;
+}
+
+/* New words unlocked banner — neon pop */
+.session-summary-screen .unlock-banner {
+  background-color: var(--color-surface);
+  border: 2px solid var(--color-accent);
+  border-radius: var(--border-radius-sm);
+  padding: var(--space-md);
+  margin-bottom: var(--space-lg);
+  text-align: center;
+  box-shadow: 0 0 14px var(--color-accent);
+  display: none;
+  animation: banner-pop-in 280ms cubic-bezier(0.23, 1.0, 0.32, 1);
+}
+
+.session-summary-screen .unlock-banner.visible {
+  display: block;
+}
+
+.session-summary-screen .unlock-banner .banner-text {
+  font-family: var(--font-display);
+  font-size: var(--font-size-md);
+  color: var(--color-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.session-summary-screen .unlock-banner .banner-count {
+  font-family: var(--font-display);
+  font-size: var(--font-size-xl);
+  color: var(--color-accent);
+  display: block;
+  margin-top: var(--space-xs);
+  text-shadow: 0 0 8px var(--color-accent);
+}
+
+/* Action button cluster — full-width on mobile, centered row on larger */
+.session-summary-screen .action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  margin-top: var(--space-xl);
+}
+
+@media (min-width: 520px) {
+  .session-summary-screen .action-buttons {
+    flex-direction: row;
+    justify-content: center;
+    gap: var(--space-lg);
+  }
+}
+
+/* Buttons inherit .btn from layout.css but get screen-specific sizing + primary treatment */
+.session-summary-screen .action-buttons .btn {
+  width: 100%;
+  min-height: 56px;
+  font-size: var(--font-size-md);
+  letter-spacing: 0.06em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (min-width: 520px) {
+  .session-summary-screen .action-buttons .btn {
+    width: auto;
+    min-width: 220px;
+    padding-left: var(--space-xl);
+    padding-right: var(--space-xl);
+  }
+}
+
+/* Primary CTA (Flashcard review) — filled neon style */
+.session-summary-screen .action-buttons .btn-primary {
+  background-color: var(--color-primary);
+  color: var(--color-background);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 10px var(--color-primary);
+}
+
+.session-summary-screen .action-buttons .btn-primary:active {
+  transform: scale(0.96);
+  box-shadow: 0 0 18px var(--color-primary);
+}
+
+/* Subtle CRT pop animation for the unlock banner */
+@keyframes banner-pop-in {
+  0% {
+    transform: translateY(12px) scale(0.92);
+    opacity: 0;
+  }
+  60% {
+    transform: translateY(-2px) scale(1.01);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+}
+
+/* Accessibility / reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .session-summary-screen .unlock-banner {
+    animation: none;
+  }
+  .session-summary-screen .stat-card:active,
+  .session-summary-screen .action-buttons .btn:active {
+    transform: none;
+  }
+}

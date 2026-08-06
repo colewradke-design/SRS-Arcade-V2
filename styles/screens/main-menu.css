@@ -1,0 +1,309 @@
+/* main-menu.css */
+/* Main Menu screen — Late 80s/early 90s Arcade CRT aesthetic */
+/* Scoped to .screen.main-menu (matches JS render) and #main-menu (legacy). */
+/* All colors via design tokens only. No raw hex, rgb, or hsl values. */
+
+/* === SCREEN WRAPPER === */
+.screen.main-menu,
+#main-menu {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;          /* horizontally center all children */
+  justify-content: flex-start;
+  padding: var(--space-xl) var(--space-md);
+  overflow-y: auto;
+  box-sizing: border-box;
+  text-align: center;           /* center inline/text content by default */
+}
+
+/* === HEADER BLOCK === */
+.screen.main-menu .menu-header,
+#main-menu .menu-header {
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: var(--space-md);
+}
+
+/* === APP TITLE (Attract screen style) === */
+.screen.main-menu .app-title,
+#main-menu .app-title {
+  font-family: var(--font-display);
+  font-size: var(--font-size-xxl);
+  color: var(--color-accent);
+  text-align: center;
+  margin: 0 0 var(--space-sm) 0;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  line-height: 1.05;
+  text-shadow:
+    0 0 8px var(--color-accent),
+    0 0 16px var(--color-accent),
+    0 0 24px var(--color-accent);
+}
+
+/* Korean / subtitle under title */
+.screen.main-menu .app-subtitle,
+.screen.main-menu .korean-subtitle,
+#main-menu .app-subtitle,
+#main-menu .korean-subtitle {
+  font-family: var(--font-korean);
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  color: var(--color-secondary);
+  text-align: center;
+  margin: 0 0 var(--space-lg) 0;
+  letter-spacing: 0.04em;
+}
+
+/* === DECK STRENGTH === */
+.screen.main-menu .deck-strength,
+.screen.main-menu .deck-strength-section,
+#main-menu .deck-strength,
+#main-menu .deck-strength-section {
+  width: 100%;
+  max-width: 420px;
+  margin-bottom: var(--space-sm);
+  text-align: center;
+}
+
+.screen.main-menu .current-chapter-label,
+#main-menu .current-chapter-label {
+  font-family: var(--font-display);
+  font-size: var(--font-size-sm);
+  color: var(--color-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  text-align: center;
+  margin-bottom: var(--space-xs);
+}
+
+.screen.main-menu .deck-strength-header,
+#main-menu .deck-strength-header {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-xs);
+}
+
+.screen.main-menu .deck-strength-label,
+.screen.main-menu .deck-strength-note,
+#main-menu .deck-strength-label,
+#main-menu .deck-strength-note {
+  font-family: var(--font-display);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: var(--space-xs);
+  text-align: center;
+}
+
+.screen.main-menu .deck-strength-value,
+#main-menu .deck-strength-value {
+  font-family: var(--font-display);
+  font-size: var(--font-size-sm);
+  color: var(--color-text);
+  letter-spacing: 0.1em;
+}
+
+/* Progress bar */
+.screen.main-menu .deck-strength-bar,
+.screen.main-menu .progress-bar,
+#main-menu .deck-strength-bar,
+#main-menu .progress-bar {
+  width: 100%;
+  height: 4px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-text-muted);
+  position: relative;
+  margin-bottom: var(--space-xs);
+  border-radius: 0;
+  overflow: hidden;
+}
+
+.screen.main-menu .deck-strength-fill,
+.screen.main-menu .progress-fill,
+#main-menu .deck-strength-fill,
+#main-menu .progress-fill {
+  height: 100%;
+  background: var(--color-accent);
+  width: 0%;
+  transition: none;
+  border-radius: 0;
+}
+
+.screen.main-menu .strength-text,
+#main-menu .strength-text {
+  font-family: var(--font-display);
+  font-size: var(--font-size-sm);
+  color: var(--color-text);
+  margin-top: var(--space-xs);
+  letter-spacing: 0.02em;
+  text-align: center;
+}
+
+/* === NAV MENU — always a single column, centered === */
+.screen.main-menu .nav-menu,
+.screen.main-menu .menu-buttons,
+#main-menu .nav-menu,
+#main-menu .menu-buttons {
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;   /* ALWAYS stacked — no wrapping, no grid */
+  align-items: stretch;     /* buttons fill the column width */
+  gap: var(--space-md);
+}
+
+/* === MENU BUTTONS === */
+.screen.main-menu .menu-btn,
+#main-menu .menu-btn {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  min-height: 64px;
+  padding: var(--space-md) var(--space-lg);
+  background: transparent;
+  border: 2px solid var(--color-primary);
+  color: var(--color-primary);
+  font-family: var(--font-display);
+  text-align: left;
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  transition:
+    transform var(--transition-speed),
+    box-shadow var(--transition-speed);
+  position: relative;
+  box-sizing: border-box;
+}
+
+/* Icon */
+.screen.main-menu .menu-btn .btn-icon,
+#main-menu .menu-btn .btn-icon {
+  font-size: var(--font-size-xl);
+  line-height: 1;
+  margin-right: var(--space-md);
+  flex-shrink: 0;
+}
+
+/* Text content block */
+.screen.main-menu .menu-btn .btn-content,
+#main-menu .menu-btn .btn-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.screen.main-menu .menu-btn .btn-title,
+.screen.main-menu .menu-btn .btn-label,
+#main-menu .menu-btn .btn-title,
+#main-menu .menu-btn .btn-label {
+  font-size: var(--font-size-md);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+}
+
+.screen.main-menu .menu-btn .btn-subtitle,
+.screen.main-menu .menu-btn .btn-desc,
+#main-menu .menu-btn .btn-subtitle,
+#main-menu .menu-btn .btn-desc {
+  font-family: var(--font-body);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  text-transform: none;
+  letter-spacing: 0.02em;
+  margin-top: 2px;
+}
+
+/* Active / pressed */
+.screen.main-menu .menu-btn:active,
+.screen.main-menu .menu-btn.active,
+#main-menu .menu-btn:active,
+#main-menu .menu-btn.active {
+  transform: scale(0.97);
+  box-shadow:
+    0 0 14px var(--color-primary),
+    0 0 28px var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+/* Selected / focused */
+.screen.main-menu .menu-btn.selected,
+.screen.main-menu .menu-btn.menu-focus,
+#main-menu .menu-btn.selected,
+#main-menu .menu-btn.menu-focus {
+  background: var(--color-primary);
+  color: var(--color-background);
+  border-color: var(--color-primary);
+  box-shadow:
+    0 0 14px var(--color-primary),
+    0 0 28px var(--color-primary);
+}
+
+.screen.main-menu .menu-btn.selected .btn-subtitle,
+.screen.main-menu .menu-btn.selected .btn-desc,
+.screen.main-menu .menu-btn.menu-focus .btn-subtitle,
+.screen.main-menu .menu-btn.menu-focus .btn-desc,
+#main-menu .menu-btn.selected .btn-subtitle,
+#main-menu .menu-btn.selected .btn-desc {
+  color: var(--color-background);
+  opacity: 0.85;
+}
+
+/* Disabled */
+.screen.main-menu .menu-btn:disabled,
+.screen.main-menu .menu-btn[disabled],
+#main-menu .menu-btn:disabled,
+#main-menu .menu-btn[disabled] {
+  opacity: 0.35;
+  pointer-events: none;
+  box-shadow: none;
+  border-color: var(--color-text-muted);
+}
+
+/* Focus pulse */
+.screen.main-menu .menu-btn:focus-visible,
+#main-menu .menu-btn:focus-visible {
+  outline: none;
+  animation: menu-focus-pulse 1.1s ease-in-out infinite;
+}
+
+@keyframes menu-focus-pulse {
+  0%, 100% { box-shadow: 0 0 8px var(--color-primary); }
+  50% {
+    box-shadow:
+      0 0 18px var(--color-primary),
+      0 0 32px var(--color-primary);
+  }
+}
+
+/* === RESPONSIVE — wider screens get a little more breathing room === */
+@media (min-width: 640px) {
+  .screen.main-menu,
+  #main-menu {
+    padding-top: calc(var(--space-xl) + var(--space-lg));
+  }
+
+  .screen.main-menu .nav-menu,
+  .screen.main-menu .menu-buttons,
+  #main-menu .nav-menu,
+  #main-menu .menu-buttons {
+    max-width: 460px;  /* slightly wider on desktop, still a column */
+  }
+
+  .screen.main-menu .menu-header,
+  #main-menu .menu-header {
+    max-width: 460px;
+  }
+}

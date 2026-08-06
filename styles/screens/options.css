@@ -1,0 +1,557 @@
+/* ==========================================================================
+   options.css
+   Scoped stylesheet for the Options screen (theme accordion + batch + update)
+   Korean Vocabulary PWA — Arcade CRT aesthetic (late 80s/early 90s)
+   
+   RULES ENFORCED:
+   - ZERO hardcoded hex, rgb(), rgba(), hsl() anywhere. All color via var(--color-*)
+   - Hard edges only (border-radius via tokens, max 4px)
+   - Neon glows via layered box-shadow + var(--color-*) only
+   - Press Start 2P for all UI typography
+   - Noto Sans KR available for any future Korean labels
+   - Touch targets ≥48px
+   - .selected + :active states with scale + glow
+   - Live theme preview: selecting a theme instantly updates entire UI via :root vars
+   - Back button at bottom (matches session-settings / flashcard-options pattern)
+   ========================================================================== */
+
+#screen-options,
+.screen.options {
+  position: relative;
+  min-height: 100dvh;
+  width: 100%;
+  padding: var(--space-lg);
+  padding-bottom: calc(var(--space-xl) + env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  background: var(--color-background);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Fix mobile cutoff — make content scrollable */
+.options-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.options-content {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: var(--space-xl);
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---------- Header (Title only — back is at bottom) ---------- */
+.screen-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--space-xl);
+  padding-bottom: var(--space-md);
+  border-bottom: 2px solid var(--color-text-muted);
+  width: 100%;
+}
+
+.header-center {
+  flex: 1;
+  text-align: center;
+}
+
+.screen-title {
+  font-family: var(--font-display);
+  font-size: var(--font-size-xl);
+  font-weight: 400;
+  color: var(--color-accent);
+  text-shadow: 
+    0 0 6px var(--color-accent),
+    0 0 12px var(--color-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin: 0;
+  line-height: 1.1;
+}
+
+/* ---------- Shared Panel Layout ---------- */
+/* Match main-menu button column width (420px / 460px on wider screens) */
+.theme-panel,
+.batch-panel,
+.chapter-unlock-panel,
+.update-panel {
+  width: 100%;
+  max-width: 420px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.theme-panel,
+.batch-panel,
+.chapter-unlock-panel {
+  margin-bottom: var(--space-md);
+}
+
+/* Flat App Update panel — always expanded, separator below */
+.update-panel {
+  margin-bottom: var(--space-xl);
+  padding-bottom: var(--space-xl);
+  border-bottom: 1px solid var(--color-text-muted);
+}
+
+@media (min-width: 640px) {
+  .theme-panel,
+  .batch-panel,
+  .chapter-unlock-panel,
+  .update-panel {
+    max-width: 460px;
+  }
+}
+
+.panel-header {
+  margin-bottom: var(--space-lg);
+  text-align: center;
+}
+
+.panel-title {
+  font-family: var(--font-display);
+  font-size: var(--font-size-lg);
+  color: var(--color-secondary);
+  text-shadow: 0 0 6px var(--color-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0 0 var(--space-sm) 0;
+}
+
+.panel-desc {
+  font-family: var(--font-body);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  line-height: 1.6;
+  margin: 0 0 var(--space-md) 0;
+  letter-spacing: 0.02em;
+  text-align: center;
+}
+
+.panel-desc strong {
+  color: var(--color-correct);
+}
+
+/* ---------- Theme Accordion ---------- */
+.accordion-panel {
+  /* no extra border when collapsed — header provides the edge */
+}
+
+.accordion-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-md);
+  position: relative;
+  min-height: 56px;
+  padding: var(--space-md) calc(var(--space-lg) + 28px); /* room for chevron */
+  background: transparent;
+  border: 2px solid var(--color-primary);
+  border-radius: var(--border-radius-sm);
+  color: var(--color-primary);
+  font-family: var(--font-display);
+  font-size: var(--font-size-md);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    transform var(--transition-speed),
+    box-shadow var(--transition-speed),
+    background-color var(--transition-speed),
+    color var(--transition-speed),
+    border-color var(--transition-speed);
+  user-select: none;
+}
+
+.accordion-header:hover {
+  box-shadow: 0 0 10px var(--color-primary);
+}
+
+.accordion-header:active {
+  transform: scale(0.98);
+}
+
+.accordion-header.open {
+  background: var(--color-primary);
+  color: var(--color-background);
+  box-shadow:
+    0 0 12px var(--color-primary),
+    0 0 24px var(--color-primary);
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  margin-bottom: 0;
+}
+
+.accordion-title {
+  flex-shrink: 0;
+  letter-spacing: 0.08em;
+}
+
+.accordion-current {
+  flex-shrink: 0;
+  font-size: var(--font-size-sm);
+  opacity: 0.85;
+  letter-spacing: 0.04em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 40%;
+}
+
+.accordion-header.open .accordion-current {
+  opacity: 0.9;
+}
+
+.accordion-chevron {
+  position: absolute;
+  right: var(--space-lg);
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 12px;
+  transition: transform var(--transition-speed);
+  line-height: 1;
+}
+
+.accordion-header.open .accordion-chevron {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.accordion-body {
+  border: 2px solid var(--color-primary);
+  border-top: none;
+  border-radius: 0 0 var(--border-radius-sm) var(--border-radius-sm);
+  padding: var(--space-lg) var(--space-md);
+  background: var(--color-surface);
+  box-shadow: 0 0 10px var(--color-primary);
+}
+
+.accordion-body[hidden] {
+  display: none;
+}
+
+/* ---------- Theme Grid (2-col mobile, auto-fit larger) ---------- */
+.theme-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: var(--space-md);
+  margin-top: var(--space-md);
+}
+
+/* ---------- Theme Button (Arcade neon rectangle) ---------- */
+.theme-btn {
+  font-family: var(--font-display);
+  font-size: var(--font-size-md);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  line-height: 1.3;
+  background: transparent;
+  border: 2px solid var(--color-primary);
+  color: var(--color-primary);
+  border-radius: var(--border-radius-sm);
+  padding: var(--space-lg) var(--space-md);
+  min-height: 80px;
+  min-width: 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: 
+    transform var(--transition-speed),
+    box-shadow var(--transition-speed),
+    background-color var(--transition-speed),
+    color var(--transition-speed),
+    border-color var(--transition-speed);
+  user-select: none;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Decorative bottom accent line (arcade detail) */
+.theme-btn::after {
+  content: '';
+  position: absolute;
+  bottom: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 28px;
+  height: 2px;
+  background: var(--color-accent);
+  opacity: 0.5;
+  transition: background-color var(--transition-speed), opacity var(--transition-speed);
+}
+
+.theme-btn:hover {
+  box-shadow: 0 0 10px var(--color-primary);
+}
+
+.theme-btn:active,
+.theme-btn.active {
+  transform: scale(0.96);
+  box-shadow: 
+    0 0 12px var(--color-primary),
+    0 0 24px var(--color-primary);
+}
+
+/* Selected = filled + stronger neon glow (live preview active) */
+.theme-btn.selected {
+  background: var(--color-primary);
+  color: var(--color-background);
+  border-color: var(--color-primary);
+  box-shadow: 
+    0 0 12px var(--color-primary),
+    0 0 24px var(--color-primary);
+}
+
+.theme-btn.selected::after {
+  background: var(--color-background);
+  opacity: 0.9;
+}
+
+.theme-btn:disabled,
+.theme-btn[disabled] {
+  opacity: 0.35;
+  pointer-events: none;
+  box-shadow: none;
+  border-color: var(--color-text-muted);
+}
+
+/* Theme name text inside button */
+.theme-btn .theme-name {
+  font-size: var(--font-size-md);
+  font-weight: 400;
+  letter-spacing: 0.04em;
+}
+
+/* ---------- Update Panel ---------- */
+.update-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  gap: var(--space-md);
+}
+
+/* The update button inherits .btn base styles — this adds update-specific shape */
+.btn-update {
+  min-height: 52px;
+  min-width: 220px;
+  font-size: var(--font-size-md);
+  letter-spacing: 0.06em;
+  /* Uses --color-accent (yellow) to visually distinguish from theme buttons */
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+.btn-update:hover {
+  box-shadow: 0 0 10px var(--color-accent);
+}
+
+.btn-update:active {
+  transform: scale(0.96);
+  box-shadow:
+    0 0 12px var(--color-accent),
+    0 0 24px var(--color-accent);
+}
+
+.btn-update:disabled,
+.btn-update[disabled] {
+  opacity: 0.4;
+  pointer-events: none;
+  box-shadow: none;
+}
+
+/* Status line below the button — base state is invisible */
+.update-status {
+  font-family: var(--font-body);
+  font-size: var(--font-size-sm);
+  letter-spacing: 0.04em;
+  min-height: 1.4em;
+  margin: 0;
+  transition: color var(--transition-speed);
+  color: var(--color-text-muted);
+}
+
+.update-status--checking {
+  color: var(--color-accent);
+}
+
+.update-status--ok {
+  color: var(--color-correct);
+  text-shadow: 0 0 6px var(--color-correct);
+}
+
+.update-status--error {
+  color: var(--color-incorrect);
+  text-shadow: 0 0 6px var(--color-incorrect);
+}
+
+/* Running cache version label — very dim, purely informational */
+.sw-version {
+  font-family: var(--font-body);
+  font-size: 8px;
+  letter-spacing: 0.08em;
+  color: var(--color-text-muted);
+  opacity: 0.5;
+  margin: 0;
+  text-transform: uppercase;
+  text-align: center;
+  width: 100%;
+}
+
+/* ---------- Chapter Unlock Panel ---------- */
+.chapter-unit-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-lg);
+}
+
+.chapter-unlock-panel .section-label {
+  font-family: var(--font-display);
+  font-size: var(--font-size-md);
+  color: var(--color-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  text-align: center;
+  margin: 0;
+}
+
+/* Arcade-styled native select — hard edges, neon border, compact */
+.arcade-select {
+  width: 100%;
+  max-width: 280px;
+  min-height: 48px;
+  padding: var(--space-md) var(--space-lg);
+  padding-right: calc(var(--space-lg) + 20px);
+  font-family: var(--font-display);
+  font-size: var(--font-size-md);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  background-color: var(--color-surface);
+  border: 2px solid var(--color-primary);
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--color-primary) 50%),
+    linear-gradient(135deg, var(--color-primary) 50%, transparent 50%);
+  background-position:
+    calc(100% - 18px) calc(50% - 3px),
+    calc(100% - 12px) calc(50% - 3px);
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+  transition:
+    box-shadow var(--transition-speed),
+    border-color var(--transition-speed),
+    color var(--transition-speed);
+}
+
+.arcade-select:hover,
+.arcade-select:focus {
+  box-shadow: 0 0 10px var(--color-primary);
+}
+
+.arcade-select:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+.arcade-select option {
+  font-family: var(--font-display);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+}
+
+.chapter-unlock-panel .update-controls {
+  margin-top: var(--space-lg);
+}
+
+/* ---------- Footer / Back to Menu (bottom, matches other settings) ---------- */
+.options-footer {
+  margin-top: auto;
+  padding-top: var(--space-xl);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.btn-back {
+  min-width: 220px;
+  min-height: 52px;
+  font-size: var(--font-size-md);
+  letter-spacing: 0.06em;
+}
+
+/* Subtle helper text */
+.footer-note {
+  font-family: var(--font-body);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  text-align: center;
+  letter-spacing: 0.02em;
+  opacity: 0.75;
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* ---------- Time slider (shared with session-settings) ---------- */
+.time-slider-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.time-slider-value {
+  font-family: var(--font-display);
+  font-size: var(--font-size-lg);
+  color: var(--color-accent);
+  text-shadow: 0 0 8px var(--color-accent);
+  letter-spacing: 0.05em;
+}
+
+.slider-range-labels {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-display);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  letter-spacing: 0.05em;
+}
+
+/* ---------- Accessibility / Focus ---------- */
+.theme-btn:focus-visible,
+.btn-update:focus-visible,
+.accordion-header:focus-visible,
+.btn-back:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+/* Ensure everything respects the global CRT scanline + screen-flash from layout.css */
+#screen-options {
+  /* inherits body::after scanlines and #app.screen-flash animation */
+}

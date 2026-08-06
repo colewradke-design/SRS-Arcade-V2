@@ -1,0 +1,25 @@
+
+name: Bump SW Version
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  bump:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Bump CACHE_VERSION with commit short SHA
+        run: |
+          SHA=$(git rev-parse --short HEAD)
+          sed -i "s/const CACHE_VERSION = '.*'/const CACHE_VERSION = '${SHA}'/" service-worker.js
+
+      - name: Commit updated service-worker.js
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add service-worker.js
+          git diff --staged --quiet || git commit -m "chore: bump SW version to ${SHA}"
+          git push

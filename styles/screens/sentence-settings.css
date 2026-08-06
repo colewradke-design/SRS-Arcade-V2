@@ -1,0 +1,120 @@
+/**
+ * styles/screens/sentence-settings.css
+ * Complexity picker for Sentence Mode.
+ * All colors via CSS custom properties. Border radius ≤ 4px. Touch targets ≥ 48px.
+ */
+
+.sentence-settings-screen {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  padding: var(--space-md);
+  background: var(--color-background);
+  color: var(--color-text);
+}
+
+.sentence-settings-screen .config-header {
+  text-align: center;
+  margin-bottom: var(--space-lg);
+}
+
+.sentence-settings-screen .screen-title {
+  font-family: var(--font-display);
+  font-size: var(--font-size-xl);
+  color: var(--color-primary);
+  margin-bottom: var(--space-sm);
+}
+
+.sentence-settings-screen .screen-subtitle {
+  font-family: var(--font-display);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.sentence-settings-screen .config-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.sentence-settings-screen .section-label {
+  font-family: var(--font-display);
+  font-size: var(--font-size-sm);
+  color: var(--color-secondary);
+  letter-spacing: 1px;
+}
+
+.sentence-settings-screen .complexity-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.sentence-settings-screen .complexity-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  min-height: 56px;
+  padding: var(--space-md);
+  background: var(--color-surface);
+  border: 2px solid var(--color-text-muted);
+  border-radius: var(--border-radius-md);
+  color: var(--color-text);
+  font-family: var(--font-display);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color var(--transition-fast), background var(--transition-fast);
+}
+
+.sentence-settings-screen .complexity-card.selected {
+  border-color: var(--color-primary);
+  background: var(--color-surface);
+  box-shadow: 0 0 0 1px var(--color-primary);
+}
+
+.sentence-settings-screen .complexity-label {
+  font-size: var(--font-size-md);
+  color: var(--color-text);
+  margin-bottom: var(--space-xs);
+}
+
+.sentence-settings-screen .complexity-card.selected .complexity-label {
+  color: var(--color-primary);
+}
+
+.sentence-settings-screen .complexity-desc {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  font-family: var(--font-display);
+}
+
+.sentence-settings-screen .config-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  margin-top: var(--space-lg);
+  padding-bottom: var(--space-md);
+}
+
+.sentence-settings-screen .btn {
+  min-height: 48px;
+  font-family: var(--font-display);
+  font-size: var(--font-size-md);
+  border-radius: var(--border-radius-md);
+  border: 2px solid var(--color-text-muted);
+  background: var(--color-surface);
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.sentence-settings-screen .btn-primary {
+  border-color: var(--color-primary);
+  background: var(--color-primary);
+  color: var(--color-background);
+}
+
+.sentence-settings-screen .btn:active {
+  transform: scale(0.98);
+}

@@ -1,0 +1,253 @@
+/* ============================================
+   FLASHCARD-OPTIONS.CSS
+   Scoped arcade styles for Flashcard Options screen
+   All colors via theme variables only — NO hex, rgb, hsl, or rgba values
+   Hard edges, neon glows, Press Start 2P typography
+   Touch targets ≥48px, full active/selected/disabled states
+   Shares visual language with session-settings for consistency
+   ============================================ */
+
+.flashcard-options-screen {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  padding: var(--space-xl) var(--space-lg) calc(var(--space-xl) * 1.5);
+  background-color: var(--color-background);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Screen Title — Arcade CRT style */
+.flashcard-options-screen .screen-title {
+  font-family: var(--font-display);
+  font-size: var(--font-size-xl);
+  color: var(--color-accent);
+  text-shadow: 0 0 10px var(--color-accent);
+  text-align: center;
+  margin: 0 0 var(--space-md);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1.1;
+}
+
+.flashcard-options-screen .screen-subtitle {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  text-align: center;
+  margin: 0 0 var(--space-xl);
+  letter-spacing: 0.03em;
+}
+
+/* Segmented Control — Master Deck / Unit Study (identical visual contract) */
+.segmented-control {
+  display: flex;
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto var(--space-xl);
+  border: 3px solid var(--color-primary);
+  border-radius: var(--border-radius-sm);
+  overflow: hidden;
+  box-shadow: 0 0 10px var(--color-primary);
+}
+
+.segment-btn {
+  flex: 1;
+  padding: var(--space-md) var(--space-lg);
+  min-height: 52px;
+  background-color: transparent;
+  border: none;
+  color: var(--color-primary);
+  font-family: var(--font-display);
+  font-size: var(--font-size-md);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: background-color var(--transition-speed),
+              color var(--transition-speed),
+              box-shadow var(--transition-speed);
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.segment-btn + .segment-btn {
+  border-left: 3px solid var(--color-primary);
+}
+
+.segment-btn.active,
+.segment-btn.selected {
+  background-color: var(--color-primary);
+  color: var(--color-background);
+  box-shadow: 0 0 14px var(--color-primary);
+}
+
+.segment-btn:active {
+  transform: scale(0.985);
+}
+
+/* Unit Study Section */
+.unit-study-section {
+  margin-bottom: var(--space-xl);
+}
+
+.unit-study-section.hidden {
+  display: none;
+}
+
+.unit-study-section .section-label {
+  font-family: var(--font-display);
+  font-size: var(--font-size-md);
+  color: var(--color-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--space-md);
+  text-align: center;
+}
+
+/* 4-Column Unit Grid — Equal width tiles, hard edges, neon selection */
+.unit-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-md);
+  max-width: 520px;
+  margin: 0 auto var(--space-lg);
+}
+
+.unit-tile {
+  position: relative;
+  aspect-ratio: 1 / 1.05;
+  min-height: 76px;
+  background-color: var(--color-surface);
+  border: 2px solid var(--color-text-muted);
+  border-radius: var(--border-radius-sm);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-sm) var(--space-xs);
+  cursor: pointer;
+  transition: transform var(--transition-speed),
+              border-color var(--transition-speed),
+              box-shadow var(--transition-speed);
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  box-shadow: 0 0 4px var(--color-text-muted);
+}
+
+.unit-tile.selected {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--color-accent), 0 0 16px var(--color-accent);
+  transform: translateY(-1px);
+}
+
+.unit-tile:active {
+  transform: scale(0.96);
+  box-shadow: 0 0 12px var(--color-primary);
+}
+
+.unit-tile.locked {
+  opacity: 0.45;
+  pointer-events: none;
+  border-style: dashed;
+  border-color: var(--color-text-muted);
+}
+
+/* Flashcard Mode Info Banner (optional instructional line) */
+.flashcard-info {
+  max-width: 420px;
+  margin: 0 auto var(--space-lg);
+  padding: var(--space-md);
+  background-color: var(--color-surface);
+  border: 2px solid var(--color-secondary);
+  border-radius: var(--border-radius-sm);
+  text-align: center;
+}
+
+.flashcard-info p {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  line-height: 1.4;
+}
+
+/* Start Button Container — pushed to bottom */
+.start-button-container {
+  margin-top: auto;
+  padding-top: var(--space-lg);
+  max-width: 420px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+
+.start-btn {
+  width: 100%;
+  min-height: 58px;
+  padding: var(--space-lg) var(--space-xl);
+  background-color: var(--color-primary);
+  color: var(--color-background);
+  border: 3px solid var(--color-primary);
+  border-radius: var(--border-radius-sm);
+  font-family: var(--font-display);
+  font-size: var(--font-size-lg);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  box-shadow: 0 0 14px var(--color-primary), 0 0 28px var(--color-primary);
+  transition: transform var(--transition-speed),
+              box-shadow var(--transition-speed),
+              background-color var(--transition-speed);
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.start-btn:disabled,
+.start-btn[disabled] {
+  opacity: 0.32;
+  pointer-events: none;
+  box-shadow: none;
+  background-color: var(--color-surface);
+  border-color: var(--color-text-muted);
+  color: var(--color-text-muted);
+}
+
+.start-btn:active:not(:disabled) {
+  transform: scale(0.97);
+  box-shadow: 0 0 22px var(--color-primary), 0 0 40px var(--color-primary);
+}
+
+/* Inline Validation Error — positioned near unit grid */
+.validation-error {
+  color: var(--color-incorrect);
+  font-size: var(--font-size-sm);
+  font-family: var(--font-body);
+  text-align: center;
+  min-height: 22px;
+  margin: var(--space-sm) 0 var(--space-md);
+  padding: 0 var(--space-md);
+  letter-spacing: 0.02em;
+}
+
+/* Responsive refinements */
+@media (min-width: 620px) {
+  .flashcard-options-screen {
+    max-width: 580px;
+    margin: 0 auto;
+    padding-top: calc(var(--space-xl) * 1.2);
+  }
+
+  .unit-grid {
+    gap: var(--space-lg);
+  }
+}
+.config-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+}

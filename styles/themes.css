@@ -1,0 +1,269 @@
+/*
+ * themes.css
+ * Korean Vocabulary PWA — Arcade Vibe Set
+ *
+ * Four theme classes that override :root color variables.
+ * Each theme lives entirely in its own class scope — no :root mutations at runtime.
+ *
+ * Variable contract (all themes must define every one of these):
+ *   --color-background   --color-surface
+ *   --color-primary      --color-secondary      --color-accent
+ *   --color-correct      --color-incorrect
+ *   --color-text         --color-text-muted
+ *   --color-leitner-1    --color-leitner-2      --color-leitner-3
+ *   --color-leitner-4    --color-leitner-5
+ *
+ * Anti-pattern guard (enforced by design, not runtime):
+ *   ✗ No gradient fills on surfaces or buttons
+ *   ✗ No soft drop-shadows (box-shadow must be outward glows, same hue)
+ *   ✗ No backdrop-filter: blur() or filter: blur()
+ *   ✓ Sharp outward glowing box-shadows on selections/active states only
+ */
+
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   1. THEME-ARCADE  —  Default · Hot Pink / Cyan
+   Deep blue-black CRT field. Phosphorescent neon on near-void.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.theme-arcade {
+  /* Surfaces */
+  --color-background:  #0a0a14;   /* Deep blue-black — CRT field             */
+  --color-surface:     #12122a;   /* Slightly lighter — cards, panels, HUD   */
+
+  /* Brand palette */
+  --color-primary:     #ff2d78;   /* Hot pink  — primary actions, borders    */
+  --color-secondary:   #00ffe0;   /* Cyan      — secondary actions, Decoding */
+  --color-accent:      #ffe600;   /* Electric yellow — streaks, Blitz phase  */
+
+  /* Outcome */
+  --color-correct:     #39ff14;   /* Neon green                              */
+  --color-incorrect:   #ff2d2d;   /* Red                                     */
+
+  /* Typography */
+  --color-text:        #e8e8ff;   /* Off-white with blue cast                */
+  --color-text-muted:  #6a6a9a;   /* Dim purple-grey — secondary labels      */
+
+  /* Leitner groups 1–5 (red → orange → yellow → green → cyan) */
+  --color-leitner-1:   #ff2d2d;
+  --color-leitner-2:   #ff8c00;
+  --color-leitner-3:   #ffe600;
+  --color-leitner-4:   #39ff14;
+  --color-leitner-5:   #00ffe0;
+}
+
+/* Selection glow — primary hue, sharp outward spread */
+.theme-arcade .selected,
+.theme-arcade [aria-selected="true"] {
+  box-shadow: 0 0 0 2px #ff2d78,
+              0 0 12px #ff2d78,
+              0 0 24px rgba(255, 45, 120, 0.45);
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   2. THEME-NEO-GEO  —  Blood Orange / White / Black
+   Maximum contrast. SNK cabinet energy. Orange burns against pure black.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.theme-neo-geo {
+  /* Surfaces */
+  --color-background:  #080808;   /* Near-pure black                         */
+  --color-surface:     #161616;   /* Lifted black — panels, cards            */
+
+  /* Brand palette */
+  --color-primary:     #ff5a1f;   /* Blood orange — primary actions          */
+  --color-secondary:   #ffffff;   /* White        — secondary actions        */
+  --color-accent:      #ff9e00;   /* Amber orange — highlights, streaks      */
+
+  /* Outcome */
+  --color-correct:     #39ff14;   /* Neon green                              */
+  --color-incorrect:   #ff2d2d;   /* Red                                     */
+
+  /* Typography */
+  --color-text:        #ffffff;   /* Pure white                              */
+  --color-text-muted:  #555555;   /* Mid grey — secondary labels             */
+
+  /* Leitner groups 1–5 (red → blood-orange → amber → light grey → white) */
+  --color-leitner-1:   #ff2d2d;
+  --color-leitner-2:   #ff5a1f;
+  --color-leitner-3:   #ff9e00;
+  --color-leitner-4:   #e6e6e6;
+  --color-leitner-5:   #ffffff;
+}
+
+/* Selection glow — blood orange, sharp */
+.theme-neo-geo .selected,
+.theme-neo-geo [aria-selected="true"] {
+  box-shadow: 0 0 0 2px #ff5a1f,
+              0 0 12px #ff5a1f,
+              0 0 24px rgba(255, 90, 31, 0.45);
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   3. THEME-VECTREX  —  Green Phosphor Monochrome
+   Single-hue phosphor. No colour except green on void black.
+   All variables resolve to shades of the same phosphor wavelength.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.theme-vectrex {
+  /* Surfaces */
+  --color-background:  #000a00;   /* Near-void with faint green tint         */
+  --color-surface:     #001400;   /* Slightly lifted phosphor dark           */
+
+  /* Brand palette */
+  --color-primary:     #00ff41;   /* Full-intensity phosphor green           */
+  --color-secondary:   #00cc33;   /* Dimmer phosphor — secondary actions     */
+  --color-accent:      #80ff80;   /* Bright mint — highlights                */
+
+  /* Outcome */
+  --color-correct:     #00ff41;   /* Same as primary — monochrome scheme     */
+  --color-incorrect:   #ff2d2d;   /* Only non-green — critical error signal  */
+
+  /* Typography */
+  --color-text:        #00ff41;   /* Phosphor green — all text               */
+  --color-text-muted:  #004d12;   /* Dark phosphor — secondary labels        */
+
+  /* Leitner groups 1–5 (void → dim → mid → bright → full phosphor) */
+  --color-leitner-1:   #00330a;
+  --color-leitner-2:   #006614;
+  --color-leitner-3:   #00aa22;
+  --color-leitner-4:   #00cc33;
+  --color-leitner-5:   #00ff41;
+}
+
+/* Selection glow — phosphor green, sharp */
+.theme-vectrex .selected,
+.theme-vectrex [aria-selected="true"] {
+  box-shadow: 0 0 0 2px #00ff41,
+              0 0 12px #00ff41,
+              0 0 24px rgba(0, 255, 65, 0.45);
+}
+
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   4. THEME-FAMICOM  —  NES Red and Gold
+   Famicom cartridge aesthetic. Crimson and gold on near-black wine-dark.
+   ───────────────────────────────────────────────────────────────────────────── */
+
+.theme-famicom {
+  /* Surfaces */
+  --color-background:  #0a0000;   /* Near-black with deep red undertone      */
+  --color-surface:     #1f0002;   /* Dark wine — panels, cards               */
+
+  /* Brand palette */
+  --color-primary:     #e60012;   /* NES cartridge red — primary actions     */
+  --color-secondary:   #ffd700;   /* Gold          — secondary actions       */
+  --color-accent:      #ffffff;   /* White         — highlights, pop         */
+
+  /* Outcome */
+  --color-correct:     #39ff14;   /* Neon green                              */
+  --color-incorrect:   #e60012;   /* Same red as primary — doubles up        */
+
+  /* Typography */
+  --color-text:        #ffffff;   /* White                                   */
+  --color-text-muted:  #8a000a;   /* Dark crimson — secondary labels         */
+
+  /* Leitner groups 1–5 (red → pink → gold → pale gold → white) */
+  --color-leitner-1:   #e60012;
+  --color-leitner-2:   #ff5c5c;
+  --color-leitner-3:   #ffd700;
+  --color-leitner-4:   #ffeb7a;
+  --color-leitner-5:   #ffffff;
+}
+
+/* Selection glow — NES red, sharp */
+.theme-famicom .selected,
+.theme-famicom [aria-selected="true"] {
+  box-shadow: 0 0 0 2px #e60012,
+              0 0 12px #e60012,
+              0 0 24px rgba(230, 0, 18, 0.45);
+}
+/* ─── 5. THEME-GAMEBOY — Monochrome Green ─── */
+.theme-gameboy {
+  --color-background:  #0f380f;
+  --color-surface:     #306230;
+  --color-primary:     #9bbc0f;
+  --color-secondary:   #8bac0f;
+  --color-accent:      #9bbc0f;
+  --color-correct:     #9bbc0f;
+  --color-incorrect:   #ff2d2d;
+  --color-text:        #9bbc0f;
+  --color-text-muted:  #306230;
+  --color-leitner-1:   #0f380f;
+  --color-leitner-2:   #306230;
+  --color-leitner-3:   #8bac0f;
+  --color-leitner-4:   #9bbc0f;
+  --color-leitner-5:   #e0f8d0;
+}
+.theme-gameboy .selected,
+.theme-gameboy [aria-selected="true"] {
+  box-shadow: 0 0 0 2px #9bbc0f, 0 0 12px #9bbc0f, 0 0 24px rgba(155, 188, 15, 0.45);
+}
+
+/* ─── 6. THEME-GENESIS — Blue / Red ─── */
+.theme-genesis {
+  --color-background:  #000814;
+  --color-surface:     #001433;
+  --color-primary:     #0055ff;
+  --color-secondary:   #ff0000;
+  --color-accent:      #ffff00;
+  --color-correct:     #00ff41;
+  --color-incorrect:   #ff0000;
+  --color-text:        #e8e8ff;
+  --color-text-muted:  #334477;
+  --color-leitner-1:   #ff0000;
+  --color-leitner-2:   #ff6600;
+  --color-leitner-3:   #ffff00;
+  --color-leitner-4:   #0055ff;
+  --color-leitner-5:   #00ffff;
+}
+.theme-genesis .selected,
+.theme-genesis [aria-selected="true"] {
+  box-shadow: 0 0 0 2px #0055ff, 0 0 12px #0055ff, 0 0 24px rgba(0, 85, 255, 0.45);
+}
+
+/* ─── 7. THEME-SNES — Purple / Gold ─── */
+.theme-snes {
+  --color-background:  #0d0014;
+  --color-surface:     #1a0033;
+  --color-primary:     #c026ff;
+  --color-secondary:   #ffd700;
+  --color-accent:      #00ffcc;
+  --color-correct:     #39ff14;
+  --color-incorrect:   #ff2d2d;
+  --color-text:        #f0e6ff;
+  --color-text-muted:  #5a2a7a;
+  --color-leitner-1:   #ff2d2d;
+  --color-leitner-2:   #ff8c00;
+  --color-leitner-3:   #ffd700;
+  --color-leitner-4:   #c026ff;
+  --color-leitner-5:   #00ffcc;
+}
+.theme-snes .selected,
+.theme-snes [aria-selected="true"] {
+  box-shadow: 0 0 0 2px #c026ff, 0 0 12px #c026ff, 0 0 24px rgba(192, 38, 255, 0.45);
+}
+
+/* ─── 8. THEME-COMMODORE — Blue / Beige ─── */
+.theme-commodore {
+  --color-background:  #1a1a2e;
+  --color-surface:     #2a2a4a;
+  --color-primary:     #6c5eb5;
+  --color-secondary:   #a38b5f;
+  --color-accent:      #00ffff;
+  --color-correct:     #39ff14;
+  --color-incorrect:   #ff2d2d;
+  --color-text:        #d4c9a8;
+  --color-text-muted:  #4a4a6a;
+  --color-leitner-1:   #ff2d2d;
+  --color-leitner-2:   #a38b5f;
+  --color-leitner-3:   #6c5eb5;
+  --color-leitner-4:   #00ffff;
+  --color-leitner-5:   #d4c9a8;
+}
+.theme-commodore .selected,
+.theme-commodore [aria-selected="true"] {
+  box-shadow: 0 0 0 2px #6c5eb5, 0 0 12px #6c5eb5, 0 0 24px rgba(108, 94, 181, 0.45);
+}

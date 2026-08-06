@@ -1,0 +1,456 @@
+/* ==========================================================================
+   styles/base.css
+   Korean Vocabulary PWA — Late 80s / Early 90s Arcade Aesthetic
+   Scope: Reset · Tokens · Base Typography · Utility Classes
+   NO color values defined here — those belong in themes.css
+   ========================================================================== */
+
+
+/* --------------------------------------------------------------------------
+   0. GOOGLE FONTS IMPORT
+   -------------------------------------------------------------------------- */
+
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Noto+Sans+KR:wght@400;700;900&display=swap');
+
+
+/* --------------------------------------------------------------------------
+   1. CSS RESET
+   Minimal but complete. Preserves box-model sanity, kills browser quirks,
+   removes default spacing and list chrome, normalises form elements.
+   -------------------------------------------------------------------------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  /* Lock layout to device pixels — critical for bitmap font fidelity */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  /* Snap scroll to screen boundaries for PWA screen transitions */
+  scroll-behavior: auto;
+  height: 100%;
+}
+
+body {
+  min-height: 100%;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Prevent text selection ghosts on fast taps */
+  -webkit-tap-highlight-color: transparent;
+  /* Prevent pull-to-refresh interfering with the game field */
+  overscroll-behavior: none;
+  /* Prevent long-press context menus on mobile during gameplay */
+  -webkit-touch-callout: none;
+  user-select: none;
+}
+
+ol,
+ul {
+  list-style: none;
+}
+
+img,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  border: none;
+  outline: none;
+  background: transparent;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Remove default focus ring; individual components define their own */
+:focus {
+  outline: none;
+}
+
+/* Restore a visible focus ring for keyboard nav only */
+:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+/* Remove default fieldset/legend styling */
+fieldset {
+  border: 0;
+  padding: 0;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* Prevent sub/sup from altering line-height */
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+
+sub { bottom: -0.25em; }
+sup { top: -0.5em; }
+
+
+/* --------------------------------------------------------------------------
+   2. DESIGN TOKENS — :root CSS CUSTOM PROPERTIES
+   All sizing, spacing, typography, and timing lives here.
+   Color tokens are NOT defined here — see themes.css.
+   -------------------------------------------------------------------------- */
+
+:root {
+
+  /* ── Font Roles ────────────────────────────────────────────────────────── */
+
+  --font-display: 'Press Start 2P', monospace;
+  /* Use for: scores, timers, screen titles, HUD labels, all English UI copy */
+
+  --font-korean:  'Noto Sans KR', sans-serif;
+  /* Use for: all Hangul — word blocks, flashcard faces, Korean labels       */
+
+  --font-body:    'Press Start 2P', monospace;
+  /* Alias of display; reserved for running body copy contexts               */
+
+
+  /* ── Font Size Scale ───────────────────────────────────────────────────── */
+  /* Calibrated for Press Start 2P legibility. This font is a bitmap face
+     designed at small sizes — resist the urge to scale it above xxl.        */
+
+  --font-size-sm:   8px;   /* HUD sub-labels, secondary annotations          */
+  --font-size-md:  10px;   /* UI copy, button text, form labels               */
+  --font-size-lg:  14px;   /* Sub-headings, live HUD values (score, combo)    */
+  --font-size-xl:  18px;   /* Screen titles                                   */
+  --font-size-xxl: 24px;   /* Main title, high-value score display            */
+
+
+  /* ── Spacing Scale ─────────────────────────────────────────────────────── */
+
+  --space-xs:   4px;
+  --space-sm:   8px;
+  --space-md:  16px;
+  --space-lg:  24px;
+  --space-xl:  40px;
+
+
+  /* ── Border Radius ─────────────────────────────────────────────────────── */
+  /* Hard-edge arcade contract: NO radius above 4px anywhere in the UI.       */
+
+  --border-radius-sm: 2px;
+  --border-radius-md: 4px;
+  --border-radius-lg: 4px;   /* Intentionally equal to md — soft curves banned */
+
+
+  /* ── Transitions ───────────────────────────────────────────────────────── */
+
+  --transition-speed:  120ms;                          /* Snappy UI feedback  */
+  --transition-fast:   80ms ease;                      /* Tap response        */
+  --transition-normal: 120ms ease;                     /* State changes       */
+  --transition-slow:   300ms ease;                     /* Phase transitions   */
+
+
+  /* ── Layout ────────────────────────────────────────────────────────────── */
+
+  --screen-max-width: 480px;    /* PWA portrait column clamp                  */
+  --hud-height:        56px;    /* Reserved top strip for score / timer / lives */
+  --lane-count:           4;    /* Referenced in JS; mirrored here for clarity  */
+  --z-overlay:          100;    /* CRT scanline layer                          */
+  --z-hud:               50;    /* HUD above game field                        */
+  --z-modal:             200;   /* Modals, popups                              */
+
+}
+
+
+/* --------------------------------------------------------------------------
+   3. BASE TYPOGRAPHY
+   Sets the default rendering context. Components override via their own
+   selectors; base styles should never win a specificity war.
+   -------------------------------------------------------------------------- */
+
+body {
+  font-family: var(--font-body);
+  font-size: var(--font-size-md);
+  line-height: 1.8;
+  /* Color intentionally omitted — resolved by the active theme class */
+}
+
+/* All headings default to the display face — components scale as needed */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 400;       /* Press Start 2P is single-weight; 400 is canonical */
+  line-height: 1.4;
+  letter-spacing: 0.02em;
+}
+
+h1 { font-size: var(--font-size-xxl); }
+h2 { font-size: var(--font-size-xl);  }
+h3 { font-size: var(--font-size-lg);  }
+h4,
+h5,
+h6 { font-size: var(--font-size-md);  }
+
+p {
+  font-family: var(--font-body);
+  font-size: var(--font-size-md);
+  line-height: 1.8;
+}
+
+/* Korean text — any element carrying the lang or data-lang attribute,
+   plus the explicit utility class                                             */
+[lang="ko"],
+[data-lang="ko"],
+.text-korean {
+  font-family: var(--font-korean);
+  font-weight: 700;
+  /* Noto Sans KR needs no sub-pixel override — it renders well at all sizes  */
+  -webkit-font-smoothing: auto;
+  -moz-osx-font-smoothing: auto;
+}
+
+/* Bitmap-safe text rendering for the pixel font at small sizes */
+.text-pixel {
+  font-family: var(--font-display);
+  image-rendering: pixelated;
+  /* Opt-out of sub-pixel AA so bitmap hinting is preserved */
+  -webkit-font-smoothing: none;
+  -moz-osx-font-smoothing: none;
+}
+
+small,
+.text-sm  { font-size: var(--font-size-sm); }
+.text-md  { font-size: var(--font-size-md); }
+.text-lg  { font-size: var(--font-size-lg); }
+.text-xl  { font-size: var(--font-size-xl); }
+.text-xxl { font-size: var(--font-size-xxl); }
+
+.text-uppercase { text-transform: uppercase; }
+.text-center    { text-align: center; }
+.text-left      { text-align: left; }
+.text-right     { text-align: right; }
+
+
+/* --------------------------------------------------------------------------
+   4. GLOBAL CRT SCANLINE OVERLAY
+   A static, full-viewport texture applied via body::after.
+   Rules from the aesthetic contract:
+     · Fixed position — moves with the viewport, not the document
+     · pointer-events: none — never intercepts touch / click
+     · z-index above all game content
+     · NO animation — it is a texture, not an effect
+   -------------------------------------------------------------------------- */
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;                       /* top/right/bottom/left: 0 */
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: var(--z-overlay);
+
+  /* Repeating scanline: 2px transparent + 2px 10%-black per 4px cycle */
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent               0px,
+    transparent               2px,
+    rgba(0, 0, 0, 0.10)       2px,
+    rgba(0, 0, 0, 0.10)       4px
+  );
+
+  /* Prevent the overlay from creating a stacking context that clips children */
+  will-change: auto;
+}
+
+
+/* --------------------------------------------------------------------------
+   5. UTILITY CLASSES
+   Single-responsibility helpers. Keep specificity at the class level (0,1,0).
+   No color values — layout and display only.
+   -------------------------------------------------------------------------- */
+
+/* ── Display ───────────────────────────────────────────────────────────── */
+
+.hidden {
+  display: none !important;
+}
+
+.invisible {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+
+/* ── Flexbox ───────────────────────────────────────────────────────────── */
+
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.flex-1 {
+  flex: 1 1 0%;
+}
+
+.flex-auto {
+  flex: 1 1 auto;
+}
+
+.flex-none {
+  flex: none;
+}
+
+.items-start   { align-items: flex-start; }
+.items-center  { align-items: center;     }
+.items-end     { align-items: flex-end;   }
+.items-stretch { align-items: stretch;    }
+
+.justify-start    { justify-content: flex-start;    }
+.justify-center   { justify-content: center;        }
+.justify-end      { justify-content: flex-end;      }
+.justify-between  { justify-content: space-between; }
+.justify-around   { justify-content: space-around;  }
+.justify-evenly   { justify-content: space-evenly;  }
+
+
+/* ── Centre helper (absolute centring within a positioned parent) ──────── */
+
+.center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Absolute-position variant for overlays, loading states */
+.center-abs {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+
+/* ── Gap shortcuts (uses spacing tokens) ───────────────────────────────── */
+
+.gap-xs { gap: var(--space-xs); }
+.gap-sm { gap: var(--space-sm); }
+.gap-md { gap: var(--space-md); }
+.gap-lg { gap: var(--space-lg); }
+.gap-xl { gap: var(--space-xl); }
+
+
+/* ── Padding shortcuts ─────────────────────────────────────────────────── */
+
+.p-xs { padding: var(--space-xs); }
+.p-sm { padding: var(--space-sm); }
+.p-md { padding: var(--space-md); }
+.p-lg { padding: var(--space-lg); }
+.p-xl { padding: var(--space-xl); }
+
+
+/* ── Position helpers ──────────────────────────────────────────────────── */
+
+.relative { position: relative; }
+.absolute { position: absolute; }
+.fixed    { position: fixed;    }
+.sticky   { position: sticky;   }
+
+.inset-0 {
+  inset: 0;
+}
+
+.overflow-hidden { overflow: hidden; }
+.overflow-auto   { overflow: auto;   }
+
+
+/* ── Sizing helpers ────────────────────────────────────────────────────── */
+
+.w-full  { width:  100%; }
+.h-full  { height: 100%; }
+.min-h-screen { min-height: 100dvh; }  /* dvh for mobile chrome safety       */
+
+
+/* ── Pointer / interaction helpers ─────────────────────────────────────── */
+
+.pointer-none    { pointer-events: none; }
+.cursor-pointer  { cursor: pointer; }
+.no-select       { user-select: none; }
+
+/* Mobile tap feedback suppressor — apply on all interactive elements */
+.no-tap-highlight {
+  -webkit-tap-highlight-color: transparent;
+}
+
+
+/* ── Transition helpers ─────────────────────────────────────────────────── */
+
+.transition-fast   { transition: all var(--transition-fast);   }
+.transition-normal { transition: all var(--transition-normal); }
+.transition-slow   { transition: all var(--transition-slow);   }
+
+
+/* ── Reduced-motion override ─────────────────────────────────────────────
+   Respects the OS accessibility setting. Kills decorative animations while
+   preserving functional ones (phase transitions, card flips).
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration:   0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration:  0.01ms !important;
+    scroll-behavior:      auto  !important;
+  }
+}

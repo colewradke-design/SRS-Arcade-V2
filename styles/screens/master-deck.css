@@ -1,0 +1,560 @@
+/* ==========================================================================
+   master-deck.css
+   Korean Vocabulary PWA â€” Master Deck Screen (Arcade Aesthetic)
+   Scoped styles only. All colors via CSS custom properties.
+   No raw hex/rgb/hsl values except for glow alpha overlays (consistent with layout.css).
+   Hard edges, neon glows, Press Start 2P UI.
+   Expandable unit â†’ chapter â†’ word tree with locked/unlocked states.
+   Units / Chapters / Words presented as centered vertical stack.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. MASTER DECK SCREEN LAYOUT
+   -------------------------------------------------------------------------- */
+
+#master-deck-screen,
+#screen-master-deck {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Header: back | centered title block | right stats */
+.deck-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  flex-shrink: 0;
+  border-bottom: 2px solid var(--color-text-muted);
+  background-color: var(--color-background);
+  z-index: 10;
+}
+
+.title-block {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.subtitle {
+  font-family: var(--font-display);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-top: 4px;
+  line-height: 1;
+}
+
+/* Right-side stat pill */
+.header-stats {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.stat-pill {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-surface);
+  border: 2px solid var(--color-primary);
+  border-radius: var(--border-radius-sm);
+  padding: var(--space-xs) var(--space-sm);
+  min-width: 78px;
+  box-shadow: 0 0 8px var(--color-primary);
+}
+
+.stat-value {
+  font-family: var(--font-display);
+  font-size: var(--font-size-xl);
+  color: var(--color-accent);
+  line-height: 1;
+  letter-spacing: 0.02em;
+}
+
+.stat-label {
+  font-family: var(--font-display);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  margin-top: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   2. UNITS / CHAPTERS / WORDS LISTS â€” Vertical centered column
+   -------------------------------------------------------------------------- */
+
+.units-list {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  width: 100%;
+  min-height: 0;
+  scroll-behavior: smooth;
+}
+
+.chapters-list,
+.words-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+  width: 100%;
+  padding: 0 var(--space-md);
+}
+
+/* Accordion containers â€” centered block with hard edge */
+.unit-accordion,
+.chapter-accordion {
+  width: 100%;
+  max-width: 460px;
+  border: 2px solid var(--color-primary);
+  border-radius: var(--border-radius-sm);
+  overflow: hidden;
+  background-color: var(--color-surface);
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+  flex-shrink: 0;
+}
+
+/* Sub-accordion (chapter) gets a top separator when inside unit */
+.chapter-accordion {
+  border-top: 1px solid var(--color-text-muted);
+  border-left: none;
+  border-right: none;
+  border-bottom: none;
+  border-radius: 0;
+  background-color: transparent;
+}
+
+/* First chapter in list removes top border */
+.chapter-accordion:first-child {
+  border-top: none;
+}
+
+/* --------------------------------------------------------------------------
+   3. ACCORDION HEADERS (Unit + Chapter)
+   Extend .btn base with full-width flex behavior
+   -------------------------------------------------------------------------- */
+
+.unit-header,
+.chapter-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  text-align: left;
+  /* .btn already provides border, color, font, min-height, transitions */
+}
+
+/* Unit header â€” primary color, slightly larger presence */
+.unit-header {
+  padding: var(--space-md);
+  background-color: var(--color-surface);
+}
+
+.unit-header .unit-label {
+  font-family: var(--font-display);
+  font-size: var(--font-size-md);
+  color: var(--color-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  flex-shrink: 0;
+}
+
+.unit-header .unit-progress {
+  font-family: var(--font-display);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  text-align: right;
+  flex: 1;
+  padding: 0 var(--space-sm);
+}
+
+/* Chapter header â€” secondary color for hierarchy */
+.chapter-header {
+  padding: var(--space-sm) var(--space-md);
+  color: var(--color-secondary);
+  border-color: var(--color-secondary);
+  background-color: rgba(0, 0, 0, 0.15);
+}
+
+.chapter-header .chapter-label {
+  font-family: var(--font-display);
+  font-size: var(--font-size-sm);
+  color: var(--color-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+}
+
+.chapter-header .chapter-progress {
+  font-family: var(--font-display);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  text-align: right;
+  flex: 1;
+  padding: 0 var(--space-sm);
+}
+
+/* Chevron icon */
+.chevron {
+  font-size: var(--font-size-sm);
+  color: inherit;
+  transition: transform var(--transition-normal);
+  flex-shrink: 0;
+  width: 18px;
+  text-align: center;
+}
+
+.unit-accordion.expanded .unit-header .chevron,
+.chapter-accordion.expanded .chapter-header .chevron {
+  transform: rotate(180deg);
+  padding-top: var(--space-sm);
+}
+
+/* Expanded state visual lift */
+.unit-accordion.expanded,
+.chapter-accordion.expanded {
+  box-shadow: 0 0 12px var(--color-primary);
+}
+
+/* --------------------------------------------------------------------------
+   4. WORD ITEMS â€” Locked vs Unlocked + Leitner color coding
+   -------------------------------------------------------------------------- */
+
+.word-item {
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  padding: var(--space-sm) var(--space-md);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-text-muted);
+  border-left-width: 4px; /* strength indicator stripe */
+  border-radius: var(--border-radius-sm);
+  transition:
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    background-color var(--transition-fast);
+  user-select: none;
+}
+
+/* Hover / active feedback (touch friendly) */
+.word-item:active {
+  transform: scale(0.985);
+}
+
+.word-item:hover {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 8px var(--color-primary);
+}
+
+/* Leitner group color coding via left border + subtle glow */
+.word-item.leitner-1 { border-left-color: var(--color-leitner-1); }
+.word-item.leitner-2 { border-left-color: var(--color-leitner-2); }
+.word-item.leitner-3 { border-left-color: var(--color-leitner-3); }
+.word-item.leitner-4 { border-left-color: var(--color-leitner-4); }
+.word-item.leitner-5 { border-left-color: var(--color-leitner-5); box-shadow: 0 0 8px var(--color-leitner-5); }
+
+/* Locked state â€” dimmed, dashed, no data */
+.word-item.locked {
+  opacity: 0.45;
+  border-style: dashed;
+  border-left-width: 2px;
+  border-color: var(--color-text-muted);
+  background-color: var(--color-surface);
+}
+
+.word-item.locked:hover,
+.word-item.locked:active {
+  box-shadow: none;
+  border-color: var(--color-text-muted);
+  transform: none;
+}
+
+.word-item.locked .hangul {
+  color: var(--color-text-muted);
+}
+
+/* Word content layout */
+.word-main {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex: 1;
+  min-width: 0;
+  gap: 2px;
+}
+
+.hangul {
+  font-family: var(--font-korean);
+  font-weight: 900;
+  font-size: var(--font-size-xl);
+  color: var(--color-text);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+}
+
+.english {
+  font-family: var(--font-body);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  line-height: 1.3;
+}
+
+/* Right side meta (badge + accuracy) */
+.word-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 4px;
+  flex-shrink: 0;
+  text-align: right;
+}
+
+.leitner-badge {
+  font-family: var(--font-display);
+  font-size: var(--font-size-sm);
+  padding: 1px 7px;
+  border: 1px solid currentColor;
+  border-radius: var(--border-radius-sm);
+  line-height: 1;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* Color the badge to match Leitner group */
+.word-item.leitner-1 .leitner-badge { color: var(--color-leitner-1); border-color: var(--color-leitner-1); }
+.word-item.leitner-2 .leitner-badge { color: var(--color-leitner-2); border-color: var(--color-leitner-2); }
+.word-item.leitner-3 .leitner-badge { color: var(--color-leitner-3); border-color: var(--color-leitner-3); }
+.word-item.leitner-4 .leitner-badge { color: var(--color-leitner-4); border-color: var(--color-leitner-4); }
+.word-item.leitner-5 .leitner-badge { color: var(--color-leitner-5); border-color: var(--color-leitner-5); }
+
+.accuracy {
+  font-family: var(--font-display);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+
+/* Locked badge */
+.locked-badge {
+  font-family: var(--font-display);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 1px 8px;
+  border: 1px dashed var(--color-text-muted);
+  border-radius: var(--border-radius-sm);
+  line-height: 1;
+}
+
+/* Empty state inside words-list */
+.words-list .empty-state {
+  width: 100%;
+  padding: var(--space-lg);
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* --------------------------------------------------------------------------
+   5. FOOTER HINT
+   -------------------------------------------------------------------------- */
+
+.deck-footer {
+  flex-shrink: 0;
+  padding: var(--space-md);
+  text-align: center;
+  border-top: 1px solid var(--color-text-muted);
+  background-color: var(--color-background);
+}
+
+.hint {
+  font-family: var(--font-display);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  line-height: 1.4;
+}
+
+/* --------------------------------------------------------------------------
+   6. ACCESSIBILITY / REDUCED MOTION
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .chevron,
+  .unit-accordion,
+  .chapter-accordion,
+  .word-item {
+    transition: none !important;
+  }
+}
+
+/* Ensure touch targets remain comfortable inside narrow lists */
+.unit-header,
+.chapter-header,
+.word-item {
+  min-height: 48px;
+}
+/* === Master Deck Polish (Filter + Expandable Stats + Locked) === */
+
+/* Filter bar */
+.deck-filters {
+  width: 100%;
+  max-width: 460px;
+  margin: 0 auto var(--space-md);
+  padding: 0 var(--space-md);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.deck-filters .section-label {
+  font-family: var(--font-display);
+  font-size: var(--font-size-sm);
+  color: var(--color-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.filter-control {
+  width: 100%;
+  max-width: 420px;
+  border: 2px solid var(--color-primary);
+  border-radius: var(--border-radius-sm);
+  overflow: hidden;
+}
+
+.filter-control .seg-option {
+  flex: 1;
+  min-height: 44px;
+  font-size: var(--font-size-sm);
+  letter-spacing: 0.06em;
+}
+
+/* === Robust Word Item Layout === */
+
+.word-item {
+  display: flex;
+  flex-direction: column;        /* stack content + stats vertically */
+  width: 100%;
+  max-width: 100%;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-text-muted);
+  border-left-width: 4px;
+  border-radius: var(--border-radius-sm);
+  padding: 0;                    /* padding moved to children */
+  transition: border-color var(--transition-fast), 
+              box-shadow var(--transition-fast);
+  cursor: pointer;
+}
+
+.word-item:active {
+  transform: scale(0.985);
+}
+
+.word-item.expanded {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 12px var(--color-accent);
+}
+
+/* Top content row (Hangul + English + meta) */
+.word-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  padding: var(--space-sm) var(--space-md);
+  width: 100%;
+}
+
+/* Stats panel always sits below as full-width block */
+.word-stats {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  background-color: var(--color-surface);
+  border-top: 1px solid var(--color-text-muted);
+  font-family: var(--font-display);
+  box-sizing: border-box;
+}
+
+/* Stats grid cells */
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+}
+
+.stat-label {
+  font-size: 7px;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  line-height: 1;
+  margin-bottom: 2px;
+}
+
+.stat-value {
+  font-size: var(--font-size-md);
+  color: var(--color-accent);
+  line-height: 1;
+  text-shadow: 0 0 4px var(--color-accent);
+}
+
+/* Locked state */
+.word-item.locked {
+  cursor: default;
+  pointer-events: none;
+  opacity: 0.45;
+}
+
+/* Strength % fade when expanded */
+.word-item .accuracy.strength {
+  color: var(--color-accent);
+  font-weight: 400;
+  transition: opacity var(--transition-speed) ease;
+}
+
+.word-item.expanded .accuracy.strength {
+  opacity: 0;
+}
+/* master-deck.css — appended at end */
+.word-stats .edit-custom-btn {
+  grid-column: 1 / -1;   /* full-width row below the 6 stat cells */
+  width: 100%;
+  margin-top: var(--space-sm);
+  box-sizing: border-box;
+}

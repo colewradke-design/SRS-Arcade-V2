@@ -1,0 +1,118 @@
+/* ============================================
+   LOGIN.CSS
+   Scoped arcade styles for the Login screen
+   ============================================ */
+
+.login-screen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100dvh;
+  background-color: var(--color-background);
+  padding: var(--space-lg);
+}
+
+.login-container {
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: var(--space-md);
+}
+
+.login-header .subtitle {
+  font-family: var(--font-body);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  margin-top: var(--space-sm);
+}
+
+/* Mode toggle (Sign In / Create Account) */
+.login-mode-toggle {
+  display: flex;
+  border: 2px solid var(--color-primary);
+  border-radius: var(--border-radius-sm);
+  overflow: hidden;
+}
+
+.login-mode-toggle .seg-option {
+  flex: 1;
+  padding: var(--space-md);
+  background: transparent;
+  color: var(--color-primary);
+  font-family: var(--font-display);
+  font-size: var(--font-size-md);
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.login-mode-toggle .seg-option.selected {
+  background: var(--color-primary);
+  color: var(--color-background);
+}
+
+/* Form */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.input-group label {
+  font-family: var(--font-display);
+  font-size: var(--font-size-sm);
+  color: var(--color-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.arcade-input {
+  background-color: var(--color-surface);
+  border: 2px solid var(--color-primary);
+  border-radius: var(--border-radius-sm);
+  color: var(--color-text);
+  padding: var(--space-md);
+  font-family: var(--font-body);
+  font-size: var(--font-size-md);
+  min-height: 52px;
+}
+
+.arcade-input:focus {
+  border-color: var(--color-accent);
+  outline: none;
+  box-shadow: 0 0 8px var(--color-accent);
+}
+
+/* Error message */
+.error-message {
+  color: var(--color-incorrect);
+  font-family: var(--font-body);
+  font-size: var(--font-size-sm);
+  min-height: 20px;
+  text-align: center;
+}
+
+/* Action buttons */
+.login-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  margin-top: var(--space-md);
+}
+
+.login-actions .btn {
+  min-height: 52px;
+}

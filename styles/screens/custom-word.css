@@ -1,0 +1,236 @@
+/* ==========================================================================
+   custom-word.css
+   Korean Vocabulary PWA — Add Custom Word Screen
+   Arcade CRT aesthetic. All colors via CSS custom properties only.
+   Hard edges (max --border-radius-sm). 48px+ touch targets.
+   Live preview card updates in real time as user types.
+   Fully responsive for mobile (iOS/Android) + desktop.
+   ========================================================================== */
+
+.custom-word-screen {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  background-color: var(--color-background);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Container for consistent max-width + centering on larger screens */
+.custom-word-container {
+  width: 100%;
+  max-width: 460px;
+  margin: 0 auto;
+  padding: var(--space-lg) var(--space-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  flex: 1;
+}
+
+/* Header with back button + title (matches other screens) */
+.custom-word-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  margin-bottom: var(--space-sm);
+}
+
+.custom-word-header .screen-title {
+  flex: 1;
+  text-align: center;
+  margin: 0;
+}
+
+/* Context badge — shows where the word will be added */
+.context-badge {
+  font-family: var(--font-display);
+  font-size: var(--font-size-sm);
+  color: var(--color-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  text-align: center;
+  padding: var(--space-sm) var(--space-md);
+  border: 2px solid var(--color-accent);
+  border-radius: var(--border-radius-sm);
+  background-color: var(--color-surface);
+  box-shadow: 0 0 8px var(--color-accent);
+  margin-bottom: var(--space-md);
+}
+
+/* Form inputs */
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  margin-bottom: var(--space-md);
+}
+
+.input-group .section-label {
+  color: var(--color-secondary);
+  margin-bottom: 4px;
+}
+
+.arcade-input {
+  font-family: var(--font-korean);
+  font-size: var(--font-size-xl);
+  font-weight: 900;
+  background-color: var(--color-surface);
+  border: 2px solid var(--color-primary);
+  border-radius: var(--border-radius-sm);
+  color: var(--color-text);
+  padding: var(--space-md);
+  min-height: 64px;           /* ≥48px touch target */
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.arcade-input:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 12px var(--color-accent);
+  outline: none;
+}
+
+.arcade-input::placeholder {
+  color: var(--color-text-muted);
+  opacity: 0.6;
+}
+
+/* English input uses display font for consistency with UI */
+#english-input {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: var(--font-size-lg);
+}
+
+/* ========== LIVE PREVIEW CARD ========== */
+.preview-section {
+  margin: var(--space-md) 0;
+}
+
+.preview-label {
+  font-family: var(--font-display);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  text-align: center;
+  margin-bottom: var(--space-sm);
+}
+
+.preview-card {
+  background-color: var(--color-surface);
+  border: 2px solid var(--color-secondary);
+  border-radius: var(--border-radius-sm);
+  padding: var(--space-md) var(--space-lg);
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 0 10px var(--color-secondary);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  user-select: none;
+}
+
+/* When user has typed something, give it a stronger accent */
+.preview-card.has-content {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 14px var(--color-accent);
+}
+
+.preview-hangul {
+  font-family: var(--font-korean);
+  font-weight: 900;
+  font-size: 42px;
+  color: var(--color-text);
+  line-height: 1.05;
+  text-align: center;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+}
+
+.preview-english {
+  font-family: var(--font-display);
+  font-size: var(--font-size-md);
+  color: var(--color-text-muted);
+  text-align: center;
+  min-height: 24px;
+}
+
+.preview-placeholder {
+  font-family: var(--font-display);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  opacity: 0.5;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* Action bar at bottom */
+.action-bar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  margin-top: auto;
+  padding-top: var(--space-lg);
+}
+
+.btn-large {
+  min-height: 64px;
+  font-size: var(--font-size-lg);
+  letter-spacing: 0.06em;
+}
+
+/* Toast for success feedback (reuses existing due-now-toast visual language) */
+.custom-toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  background: var(--color-surface);
+  border: 2px solid var(--color-correct);
+  border-radius: var(--border-radius-sm);
+  padding: var(--space-md) var(--space-lg);
+  box-shadow: 0 0 16px var(--color-correct);
+  min-width: 280px;
+  max-width: 90vw;
+  text-align: center;
+  animation: toast-pop 200ms ease-out;
+}
+
+.custom-toast .toast-text {
+  font-family: var(--font-display);
+  font-size: var(--font-size-md);
+  color: var(--color-correct);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+@keyframes toast-pop {
+  from {
+    transform: translateX(-50%) translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Responsive tweaks */
+@media (min-width: 520px) {
+  .custom-word-container {
+    padding-top: var(--space-xl);
+  }
+
+  .preview-hangul {
+    font-size: 48px;
+  }
+}

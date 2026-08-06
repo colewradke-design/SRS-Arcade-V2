@@ -1,0 +1,265 @@
+/* flashcard.css
+   Scoped styles for Flashcard Mode screen only
+   Korean Vocabulary PWA â€” Late 80s/Early 90s Arcade CRT Aesthetic
+   Hard edges, neon glows, high contrast. All colors via CSS variables only.
+   No raw hex, rgb, hsl, or color literals anywhere.
+*/
+
+#flashcard-screen {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-background);
+  position: relative;
+  overflow: hidden;
+  font-family: var(--font-display);
+}
+
+/* Flashcard HUD â€” minimal top bar with stats */
+#flashcard-hud {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-surface);
+  border-bottom: 2px solid var(--color-primary);
+  box-shadow: 0 0 10px var(--color-primary);
+  z-index: 100;
+  flex-shrink: 0;
+}
+
+.hud-stats {
+  display: flex;
+  gap: var(--space-xl);
+  align-items: center;
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 72px;
+}
+
+.stat-label {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  line-height: 1;
+}
+
+.stat-value {
+  font-size: var(--font-size-lg);
+  color: var(--color-accent);
+  line-height: 1;
+  font-weight: 400;
+}
+
+/* Main content area â€” card + rating controls centered */
+.flashcard-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-lg) var(--space-md);
+  gap: var(--space-xl);
+  position: relative;
+}
+
+.card-inner {
+  transition: transform 0.2s ease-in;
+  transform: scaleX(1);
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.card-inner.flip-out {
+  transform: scaleX(0);
+}
+
+.card-inner.flip-in {
+  transform: scaleX(1);
+  transition: transform 0.2s ease-out;
+}
+
+/* Base — sizes and fonts overridden by data-lang + side class */
+#card-word {
+  color: var(--color-text);
+  text-align: center;
+  line-height: 1.05;
+  text-shadow: 0 0 6px var(--color-text);
+  transition: font-size 0.1s ease, font-family 0.1s ease, font-weight 0.1s ease;
+  /* fallback */
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 42px;
+}
+
+/* Native side — Korean (Hangul) */
+#card-word[data-lang="ko"]:not(.card-word--english) {
+  font-family: var(--font-korean);
+  font-weight: 900;
+  font-size: 58px;
+}
+
+/* Native side — Latin script (German, etc.) */
+#card-word[data-lang="en"]:not(.card-word--english) {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 28px;
+  letter-spacing: 0.02em;
+}
+
+/* Native side — Cyrillic */
+#card-word[data-lang="ru"]:not(.card-word--english) {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 42px;
+}
+
+/* English side (always Latin) — smaller, independent size */
+#card-word.card-word--english {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 28px;
+  text-shadow: none;
+  letter-spacing: 0.02em;
+}
+/* Rating buttons section â€” hidden until card is flipped */
+.rating-container {
+  width: 100%;
+  max-width: 380px;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+  z-index: 2;
+}
+
+.rating-section.visible {
+  display: flex;
+}
+
+.rating-label {
+  font-family: var(--font-display);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* Rating button grid */
+.rating-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  width: 100%;
+  justify-content: center;
+}
+
+/* Neon-bordered arcade rating buttons (48px+ touch targets) */
+.rating-btn {
+  flex: 1 1 calc(50% - var(--space-sm));
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: var(--font-size-md);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  background: transparent;
+  border: 2px solid var(--color-primary);
+  color: var(--color-primary);
+  border-radius: var(--border-radius-sm);
+  padding: var(--space-sm) var(--space-md);
+  cursor: pointer;
+  transition: transform var(--transition-speed), 
+              box-shadow var(--transition-speed);
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  box-shadow: 0 0 6px var(--color-primary);
+}
+
+/* Outcome-specific neon accent colors via tokens */
+.rating-btn.btn-miss {
+  border-color: var(--color-incorrect);
+  color: var(--color-incorrect);
+  box-shadow: 0 0 6px var(--color-incorrect);
+}
+
+.rating-btn.btn-hard {
+  border-color: var(--color-text-muted);
+  color: var(--color-text-muted);
+  box-shadow: 0 0 6px var(--color-text-muted);
+}
+
+.rating-btn.btn-moderate {
+  border-color: var(--color-secondary);
+  color: var(--color-secondary);
+  box-shadow: 0 0 6px var(--color-secondary);
+}
+
+.rating-btn.btn-easy {
+  border-color: var(--color-correct);
+  color: var(--color-correct);
+  box-shadow: 0 0 6px var(--color-correct);
+}
+
+/* Press / active feedback â€” scale + stronger glow using currentColor */
+.rating-btn:active,
+.rating-btn.active {
+  transform: scale(0.94);
+  box-shadow: 0 0 14px currentColor;
+}
+
+/* Bottom footer bar for navigation */
+.flashcard-footer {
+  padding: var(--space-md) var(--space-lg);
+  display: flex;
+  justify-content: center;
+  flex-shrink: 0;
+  z-index: 10;
+}
+
+/* Responsive scaling for tablets/desktop */
+@media (min-width: 768px) {
+  .card-outer {
+    width: min(420px, 45vw);
+    height: min(320px, 42vh);
+    min-width: 280px;
+    margin: 0 auto;
+  }
+
+  /* Native Korean — keep large */
+  #card-word[data-lang="ko"]:not(.card-word--english) {
+    font-size: 64px;
+  }
+
+  /* Native Latin / Cyrillic */
+  #card-word[data-lang="en"]:not(.card-word--english),
+  #card-word[data-lang="ru"]:not(.card-word--english) {
+    font-size: 28px;
+  }
+
+  /* English side */
+  #card-word.card-word--english {
+    font-size: 34px;
+  }
+
+  .rating-btn {
+    flex: 0 1 160px;
+  }
+}
+
+/* Reduced motion accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .card-inner,
+  .card-inner.flip-out,
+  .card-inner.flip-in {
+    transition: none !important;
+  }
+}

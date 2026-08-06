@@ -1,0 +1,243 @@
+/* ============================================
+   SPELLING-FLASHCARD.CSS
+   Scoped arcade styles for Spelling Practice
+   All colors via CSS custom properties. Hard edges.
+   ============================================ */
+
+.spelling-flashcard-screen {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  background-color: var(--color-background);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  overflow: hidden;
+}
+
+/* HUD */
+.spelling-hud {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-sm) var(--space-md);
+  background-color: var(--color-surface);
+  border-bottom: 2px solid var(--color-primary);
+  box-shadow: 0 0 10px var(--color-primary);
+  z-index: 100;
+  flex-shrink: 0;
+  min-height: 56px;
+}
+
+.hud-counter {
+  font-family: var(--font-display);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  min-width: 72px;
+  text-align: right;
+}
+
+/* Card area */
+.spelling-card-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-lg) var(--space-md);
+  gap: var(--space-lg);
+  min-height: 0;
+}
+
+.card-outer {
+  width: 100%;
+  max-width: 420px;
+  perspective: 1000px;
+}
+
+.card-inner {
+  width: 100%;
+  min-height: 220px;
+  background-color: var(--color-surface);
+  border: 3px solid var(--color-secondary);
+  border-radius: var(--border-radius-sm);
+  box-shadow: 0 0 14px var(--color-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-xl);
+  transition: border-color var(--transition-speed), box-shadow var(--transition-speed);
+}
+
+.card-face {
+  font-family: var(--font-display);
+  font-size: var(--font-size-xl);
+  color: var(--color-text);
+  text-align: center;
+  line-height: 1.3;
+}
+
+/* Flash feedback */
+.card-outer.flash-correct .card-inner {
+  border-color: var(--color-correct);
+  box-shadow: 0 0 20px var(--color-correct);
+}
+
+.card-outer.flash-incorrect .card-inner {
+  border-color: var(--color-incorrect);
+  box-shadow: 0 0 20px var(--color-incorrect);
+}
+
+/* Attempt dots */
+.attempt-dots {
+  display: flex;
+  gap: var(--space-md);
+  margin-top: var(--space-md);
+}
+
+.attempt-dot {
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--color-text-muted);
+  border-radius: var(--border-radius-sm);
+  background-color: transparent;
+  transition: background-color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.attempt-dot.used {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+/* Input */
+.spelling-input {
+  width: 100%;
+  max-width: 420px;
+  min-height: 64px;
+  padding: var(--space-md);
+  font-family: var(--font-korean);
+  font-size: 28px;
+  font-weight: 700;
+  background-color: var(--color-surface);
+  border: 3px solid var(--color-primary);
+  border-radius: var(--border-radius-sm);
+  color: var(--color-text);
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.spelling-input:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 12px var(--color-accent);
+  outline: none;
+}
+
+.spelling-input:disabled {
+  opacity: 0.6;
+}
+
+/* Submit button */
+.spelling-submit {
+  width: 100%;
+  max-width: 420px;
+  min-height: 56px;
+}
+
+/* Syllable feedback */
+.syllable-feedback {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  justify-content: center;
+  max-width: 100%;
+  margin-top: var(--space-md);
+}
+
+.syllable-block {
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-korean);
+  font-size: var(--font-size-xl);
+  font-weight: 900;
+  border: 2px solid var(--color-text-muted);
+  border-radius: var(--border-radius-sm);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+}
+
+.syllable-block.correct {
+  border-color: var(--color-correct);
+  background-color: color-mix(in srgb, var(--color-correct) 15%, var(--color-surface));
+  color: var(--color-correct);
+}
+
+.syllable-block.incorrect {
+  border-color: var(--color-incorrect);
+  background-color: color-mix(in srgb, var(--color-incorrect) 15%, var(--color-surface));
+  color: var(--color-incorrect);
+}
+
+/* Reveal / tap to continue */
+.tap-to-continue {
+  font-family: var(--font-display);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-top: var(--space-md);
+}
+
+/* Session complete */
+.spelling-complete {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  padding: var(--space-xl);
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .spelling-flashcard-screen.keyboard-open .spelling-card-area {
+    gap: var(--space-sm);
+    padding: var(--space-sm) var(--space-xs);   /* reduced side padding */
+    justify-content: flex-start;
+  }
+
+  .spelling-flashcard-screen.keyboard-open .card-inner {
+    min-height: 68px;
+    padding: var(--space-sm) var(--space-md);
+  }
+
+  .spelling-flashcard-screen.keyboard-open .attempt-dots,
+  .spelling-flashcard-screen.keyboard-open #continue-hint {
+    display: none !important;
+  }
+
+  .spelling-flashcard-screen.keyboard-open .spelling-input {
+    min-height: 48px;
+    font-size: 22px;
+    padding: 10px 12px;
+  }
+
+  /* Smaller corrections */
+  .spelling-flashcard-screen.keyboard-open .syllable-feedback {
+    gap: 6px;
+    margin-top: var(--space-sm);
+    margin-bottom: var(--space-sm);
+    max-width: 100%;           /* ← allows boxes to spread wider */
+    padding-left: 2px;
+    padding-right: 2px;
+  }
+
+  .spelling-flashcard-screen.keyboard-open .syllable-block {
+    min-width: 36px;
+    min-height: 36px;
+    font-size: 20px;
+    border-width: 2px;
+  }
+}

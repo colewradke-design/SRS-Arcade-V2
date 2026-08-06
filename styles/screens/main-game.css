@@ -1,0 +1,435 @@
+/* ==========================================================================
+   main-game.css
+   Korean Vocabulary PWA — Main Game Screen (Arcade CRT Aesthetic)
+   Strictly scoped to #screen-main-game. All colors via design tokens only.
+   NO raw hex, RGB, or HSL values anywhere.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Screen Root — Full viewport game container (no scroll, hard edges)
+   -------------------------------------------------------------------------- */
+#screen-main-game {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background-color: var(--color-background);
+  font-family: var(--font-body);
+  color: var(--color-text);
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+
+/* --------------------------------------------------------------------------
+   HUD Bar — Fixed top bar with clear visual regions (56px)
+   -------------------------------------------------------------------------- */
+#screen-main-game #game-hud {
+  height: 56px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--space-sm);
+  background-color: var(--color-surface);
+  border-bottom: 2px solid var(--color-primary);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--color-primary) 25%, transparent);
+  z-index: 100;
+  gap: var(--space-xs);
+}
+
+/* HUD subsections */
+#screen-main-game .hud-left,
+#screen-main-game .hud-center,
+#screen-main-game .hud-right {
+  display: flex;
+  align-items: center;
+}
+
+#screen-main-game .hud-left {
+  gap: var(--space-xs);
+  flex: 1 1 auto;
+}
+
+#screen-main-game .hud-center {
+  justify-content: center;
+  flex: 0 0 auto;
+}
+
+#screen-main-game .hud-right {
+  gap: var(--space-sm);
+  flex: 1 1 auto;
+  justify-content: flex-end;
+}
+
+/* Pause button — icon style, arcade border */
+#screen-main-game #pause-btn {
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  line-height: 1;
+  color: var(--color-text);
+  background-color: transparent;
+  border: 2px solid var(--color-text-muted);
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  transition: transform var(--transition-speed), 
+              border-color var(--transition-speed),
+              color var(--transition-speed),
+              box-shadow var(--transition-speed);
+}
+
+#screen-main-game #pause-btn:active {
+  transform: scale(0.92);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  box-shadow: 0 0 8px var(--color-primary);
+}
+
+/* Phase badge — changes color on phase transition */
+#screen-main-game .hud-phase-badge {
+  font-family: var(--font-display);
+  font-size: var(--font-size-sm);
+  padding: 3px 6px;
+  border: 2px solid var(--color-secondary);
+  border-radius: var(--border-radius-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  transition: background-color var(--transition-speed),
+              color var(--transition-speed),
+              border-color var(--transition-speed);
+}
+
+/* Phase-specific colors (Decoding = cyan/secondary, Recognition = hot pink/primary, Blitz = yellow/accent) */
+#screen-main-game .hud-phase-badge.phase-decoding {
+  background-color: var(--color-secondary);
+  color: var(--color-background);
+  border-color: var(--color-secondary);
+}
+
+#screen-main-game .hud-phase-badge.phase-recognition {
+  background-color: var(--color-primary);
+  color: var(--color-background);
+  border-color: var(--color-primary);
+}
+
+#screen-main-game .hud-phase-badge.phase-blitz {
+  background-color: var(--color-accent);
+  color: var(--color-background);
+  border-color: var(--color-accent);
+}
+
+/* Timer display */
+#screen-main-game #hud-timer {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-variant-numeric: tabular-nums;
+  min-width: 64px;
+  text-align: center;
+  letter-spacing: 0.04em;
+}
+
+/* Urgent timer (under 60s) — pulses red */
+#screen-main-game #hud-timer.urgent {
+  color: var(--color-incorrect);
+  animation: hud-timer-pulse 1s ease-in-out infinite;
+}
+
+@keyframes hud-timer-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.45; }
+}
+
+/* Streak groups — right side HUD */
+#screen-main-game .hud-streak-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  line-height: 1.05;
+  gap: 1px;
+}
+
+#screen-main-game .hud-label {
+  font-family: var(--font-display);
+  font-size: 7px;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  line-height: 1;
+}
+
+#screen-main-game .hud-value {
+  font-family: var(--font-display);
+  font-size: var(--font-size-md);
+  color: var(--color-accent);
+  text-shadow: 0 0 5px var(--color-accent);
+  line-height: 1;
+}
+
+/* --------------------------------------------------------------------------
+   Game Field — The "canvas" area (flex:1, grid of 4 equal lanes)
+   -------------------------------------------------------------------------- */
+#screen-main-game #game-field {
+  flex: 1 1 auto;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  background: linear-gradient(
+    to bottom,
+    var(--color-background) 0%,
+    color-mix(in srgb, var(--color-background) 55%, var(--color-surface)) 100%
+  );
+  z-index: 1;
+}
+/* --------------------------------------------------------------------------
+   Lanes — 4 equal-width vertical tracks, full height
+   Dividers: 1px solid at 40% opacity of muted text color
+   -------------------------------------------------------------------------- */
+#screen-main-game .lane {
+  flex: 1;
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid color-mix(in srgb, var(--color-text-muted) 40%, transparent);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 0.1s ease;
+  z-index: 2;
+}
+
+#screen-main-game .lane:last-child {
+  border-right: none;
+}
+
+/* Tap flash feedback (regardless of correct/incorrect) */
+#screen-main-game .lane.tapped {
+  background-color: color-mix(in srgb, var(--color-primary) 42%, var(--color-background));
+}
+#screen-main-game .lane.correct {
+  background-color: var(--color-correct) !important;
+  transition: background-color 0ms;
+}
+
+#screen-main-game .lane.incorrect {
+  background-color: var(--color-incorrect) !important;
+  transition: background-color 0ms;
+}
+/* --------------------------------------------------------------------------
+   Active Falling Block — #active-block
+   Exact contract: flat surface fill, 2px neon secondary border,
+   outward glow, giant Korean text (48px, 900 weight)
+   -------------------------------------------------------------------------- */
+/* --------------------------------------------------------------------------
+   Active Falling Block — #active-block
+   Two-region layout:
+     1. .block-korean  — centered hero area (flex:1, centered)
+     2. .block-choices — 4-col grid pinned to block bottom, lane-aligned
+   -------------------------------------------------------------------------- */
+#screen-main-game #active-block {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;          /* spans all 4 lanes — full game-field width */
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-surface);
+  border-top: 2px solid var(--color-secondary);
+  border-bottom: 2px solid var(--color-secondary);
+  border-left: none;
+  border-right: none;
+  box-shadow: 0 0 10px var(--color-secondary);
+  z-index: 30;
+  pointer-events: none;
+  box-sizing: border-box;
+  will-change: transform;
+  overflow: visible;
+  grid-column: 1 / -1;
+}
+
+/* ── Korean word — centred hero region ──────────────────────────────────── */
+#screen-main-game .block-target {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 12px;
+  font-family: var(--font-korean);
+  font-weight: 900;
+  font-size: 46px;
+  line-height: 1.15;
+  color: var(--color-text);
+  text-align: center;
+  text-shadow: 0 0 8px var(--color-secondary);
+  white-space: normal;
+  word-break: keep-all;
+  overflow: visible;
+}
+/* ============================================================
+   TARGET WORD — Language-aware font sizing (future-proof)
+   Base rule above stays 100% untouched.
+   Only font-family, font-size, font-weight, letter-spacing,
+   direction, and text-align are overridden per language.
+   ============================================================ */
+
+/* Korean (Hangul) — large, bold, dense script */
+#screen-main-game #active-block .block-target[data-lang="ko"] {
+  font-family: var(--font-korean);
+  font-weight: 900;
+  font-size: 46px;
+  line-height: 1.15;
+}
+
+/* Latin script (English, German, etc.) — smaller to prevent overflow */
+#screen-main-game #active-block .block-target[data-lang="en"] {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 20px;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+}
+
+/* Cyrillic (Russian, etc.) — same treatment as Latin for now */
+#screen-main-game #active-block .block-target[data-lang="ru"] {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 24px;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+}
+
+/* Arabic script (Farsi, Arabic) — RTL + slightly larger */
+#screen-main-game #active-block .block-target[data-lang="ar"] {
+  font-family: var(--font-display); /* placeholder until we add proper Arabic font */
+  font-size: 32px;
+  direction: rtl;
+  text-align: right;
+  line-height: 1.25;
+}
+
+/* ── English choices — 4-col grid, lane-aligned ─────────────────────────── */
+#screen-main-game .block-choices {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);  /* mirrors #game-field lane grid */
+  border-top: 1px solid color-mix(in srgb, var(--color-secondary) 40%, transparent);
+}
+
+#screen-main-game .block-choice {
+  flex: 1;
+  padding: 10px 6px;
+  font-family: var(--font-korean);
+  font-size: 14px;         
+  color: var(--color-secondary);
+  text-align: center;
+  line-height: 1.4;
+  white-space: normal;
+  word-break: keep-all;
+  border-right: 1px solid color-mix(in srgb, var(--color-text-muted) 40%, transparent);
+}
+
+#screen-main-game .block-choice:last-child {
+  border-right: none;
+}
+
+/* ============================================================
+   BLOCK CHOICES — Language-aware font handling (future-proof)
+   Base .block-choice rule above stays untouched.
+   Only font-family, font-size, font-weight, line-height,
+   direction, and text-align are overridden.
+   ============================================================ */
+
+/* Korean - answe choices */
+#screen-main-game .block-choice[data-lang="ko"] {
+  font-family: var(--font-korean);
+  font-weight: 700;
+  font-size: 13px;
+  line-height: 1.25;
+  padding: 2px 1px;
+  
+}
+
+/* English / German / Latin script — answer choices */
+#screen-main-game .block-choice[data-lang="en"] {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 8px;                 /* Reduced from 13px for mobile */
+  line-height: 1.25;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  min-width: 0;                    /* Critical: prevents grid column from expanding */
+  text-align: center;
+  padding: 2px 1px;
+  word-spacing: 0.75;
+}
+
+/* Russian / Cyrillic */
+#screen-main-game .block-choice[data-lang="ru"] {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 1.3;
+}
+
+/* Arabic script (Farsi, Arabic) — RTL support */
+#screen-main-game .block-choice[data-lang="ar"] {
+  font-family: var(--font-display);
+  font-size: 14px;
+  direction: rtl;
+  text-align: right;
+  line-height: 1.35;
+}
+/* =====================================================
+   DESKTOP STYLES — All Answer Choice Languages
+   Applies on tablets and larger screens (≥768px)
+   ===================================================== */
+
+@media (min-width: 768px) {
+
+  /* Korean */
+  #screen-main-game .block-choice[data-lang="ko"] {
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.2;
+    padding: 10px 8px;
+  }
+
+  /* English */
+  #screen-main-game .block-choice[data-lang="en"] {
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.3;
+    padding: 10px 8px;
+    word-spacing: normal;
+    letter-spacing: normal;
+  }
+
+  /* Russian / Cyrillic */
+  #screen-main-game .block-choice[data-lang="ru"] {
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.3;
+    padding: 10px 8px;
+    word-spacing: normal;
+    letter-spacing: normal;
+  }
+
+  /* Arabic */
+  #screen-main-game .block-choice[data-lang="ar"] {
+    font-size: 16px;
+    line-height: 1.35;
+    padding: 10px 8px;
+    direction: rtl;
+    text-align: right;
+  }
+
+}
+/* ==========================================================================
+   End of main-game.css — All rules respect arcade hard-edge + neon-glow
+   contract and use ONLY CSS variable tokens for color.
+   ========================================================================== */

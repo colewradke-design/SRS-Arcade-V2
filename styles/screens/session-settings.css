@@ -1,0 +1,723 @@
+/* ============================================
+   SESSION-SETTINGS.CSS
+   Scoped arcade styles for Session Settings screen
+   All colors via theme variables only — NO hex, rgb, hsl, or rgba values
+   Hard edges, neon glows, Press Start 2P typography
+   Touch targets ≥48px, full active/selected/disabled states
+   ============================================ */
+
+.session-settings-screen {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  padding: var(--space-xl) var(--space-lg) calc(var(--space-xl) * 1.5);
+  background-color: var(--color-background);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.session-settings-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: var(--space-xl);
+  padding-top: var(--space-lg);
+}
+
+/* Push the Start button to the bottom of the content naturally */
+.session-settings-content .action-bar {
+  flex-shrink: 0;
+  margin-top: auto;
+  padding-top: var(--space-lg);
+}
+
+
+/* Screen Title — Arcade CRT style */
+.session-settings-screen .screen-title {
+  font-family: var(--font-display);
+  font-size: var(--font-size-xl);
+  color: var(--color-accent);
+  text-shadow: 0 0 10px var(--color-accent);
+  text-align: center;
+  margin: 0 0 var(--space-md);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  line-height: 1.1;
+}
+
+.session-settings-screen .screen-subtitle {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  text-align: center;
+  margin: 0 0 var(--space-xl);
+  letter-spacing: 0.03em;
+}
+
+/* Segmented Control — Master Deck / Unit Study */
+.segmented-control {
+  display: flex;
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto var(--space-xl);
+  border: 3px solid var(--color-primary);
+  border-radius: var(--border-radius-sm);
+  overflow: hidden;
+  box-shadow: 0 0 10px var(--color-primary);
+  margin-bottom: 0;
+  margin-top: var(--space-sm);
+}
+
+.segment-btn {
+  flex: 1;
+  padding: var(--space-md) var(--space-lg);
+  min-height: 52px;
+  background-color: transparent;
+  border: none;
+  color: var(--color-primary);
+  font-family: var(--font-display);
+  font-size: var(--font-size-md);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: background-color var(--transition-speed),
+              color var(--transition-speed),
+              box-shadow var(--transition-speed);
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.segment-btn + .segment-btn {
+  border-left: 3px solid var(--color-primary);
+}
+
+.segment-btn.active,
+.segment-btn.selected {
+  background-color: var(--color-primary);
+  color: var(--color-background);
+  box-shadow: 0 0 14px var(--color-primary);
+}
+
+.segment-btn:active {
+  transform: scale(0.985);
+}
+
+/* Unit Study Section */
+#screen-session-settings .unit-study-section {
+  margin-bottom: var(--space-xs);
+  padding-top: 0;
+}
+
+.unit-study-section.hidden {
+  display: none;
+}
+
+.unit-study-section .section-label {
+  font-family: var(--font-display);
+  font-size: var(--font-size-md);
+  color: var(--color-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--space-md);
+  text-align: center;
+}
+
+/* 4-Column Unit Grid — Equal width tiles, hard edges */
+.unit-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-md);
+  max-width: 520px;
+  margin: 0 auto var(--space-lg);
+}
+
+.unit-tile {
+  position: relative;
+  aspect-ratio: 1 / 1.05;
+  min-height: 76px;
+  background-color: var(--color-surface);
+  border: 2px solid var(--color-text-muted);
+  border-radius: var(--border-radius-sm);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-sm) var(--space-xs);
+  cursor: pointer;
+  transition: transform var(--transition-speed),
+              border-color var(--transition-speed),
+              box-shadow var(--transition-speed);
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  box-shadow: 0 0 4px var(--color-text-muted);
+}
+
+.unit-tile .unit-index {
+  font-family: var(--font-display);
+  font-size: var(--font-size-md);
+  color: var(--color-accent);
+  line-height: 1;
+  margin-bottom: var(--space-xs);
+  white-space: nowrap;
+  text-align: center;
+}
+
+.unit-tile .unit-count {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  text-align: center;
+  letter-spacing: 0.02em;
+}
+
+.unit-tile.selected {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--color-accent), 0 0 16px var(--color-accent);
+  transform: translateY(-1px);
+}
+
+.unit-tile:active {
+  transform: scale(0.96);
+  box-shadow: 0 0 12px var(--color-primary);
+}
+
+.unit-tile.locked {
+  opacity: 0.45;
+  pointer-events: none;
+  border-style: dashed;
+  border-color: var(--color-text-muted);
+}
+
+/* Session Length Slider */
+.time-slider-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.time-slider-value {
+  font-family: var(--font-display);
+  font-size: var(--font-size-lg);
+  color: var(--color-accent);
+  text-shadow: 0 0 8px var(--color-accent);
+  letter-spacing: 0.05em;
+}
+
+.slider-range-labels {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-display);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  letter-spacing: 0.05em;
+}
+
+/* Custom range input — hard edges, neon glow, ≥48px touch target */
+.arcade-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 48px;         /* touch target height */
+  background: transparent;
+  cursor: pointer;
+  margin: 0;
+}
+
+.arcade-slider:focus {
+  outline: none;
+}
+
+/* Track */
+.arcade-slider::-webkit-slider-runnable-track {
+  height: 8px;
+  background-color: var(--color-surface);
+  border: 2px solid var(--color-secondary);
+  border-radius: var(--border-radius-sm);
+  box-shadow: 0 0 8px var(--color-secondary);
+}
+
+.arcade-slider::-moz-range-track {
+  height: 8px;
+  background-color: var(--color-surface);
+  border: 2px solid var(--color-secondary);
+  border-radius: var(--border-radius-sm);
+  box-shadow: 0 0 8px var(--color-secondary);
+}
+
+/* Thumb — 32x32 hard-edge block, centered on the 8px track */
+.arcade-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 32px;
+  height: 32px;
+  margin-top: -12px;
+  background-color: var(--color-secondary);
+  border: 2px solid var(--color-secondary);
+  border-radius: var(--border-radius-sm);
+  box-shadow: 0 0 12px var(--color-secondary), 0 0 24px var(--color-secondary);
+  cursor: pointer;
+  transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+}
+
+.arcade-slider::-webkit-slider-thumb:active {
+  transform: scale(0.9);
+  box-shadow: 0 0 20px var(--color-secondary), 0 0 36px var(--color-secondary);
+}
+
+.arcade-slider::-moz-range-thumb {
+  width: 32px;
+  height: 32px;
+  background-color: var(--color-secondary);
+  border: 2px solid var(--color-secondary);
+  border-radius: var(--border-radius-sm);
+  box-shadow: 0 0 12px var(--color-secondary), 0 0 24px var(--color-secondary);
+  cursor: pointer;
+}
+
+.arcade-slider::-moz-range-thumb:active {
+  transform: scale(0.9);
+}
+
+.arcade-slider:focus-visible::-webkit-slider-thumb,
+.arcade-slider:focus-visible::-moz-range-thumb {
+  animation: arcade-pulse 1.2s ease-in-out infinite;
+}
+
+/* ============================================
+   READING SPEED SECTION
+   Matches the style of .unit-study-section and .time-selector-section
+   ============================================ */
+
+.reading-speed-section {
+  margin-bottom: var(--space-xl); 
+  margin-top: 0;
+}
+
+.reading-speed-section .section-label {
+  font-family: var(--font-display);
+  font-size: var(--font-size-md);
+  color: var(--color-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--space-md);
+  text-align: center;
+}
+
+.reading-speed-section .section-hint {
+  font-family: var(--font-body);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  text-align: center;
+  margin-top: var(--space-sm);
+  letter-spacing: 0.02em;
+  line-height: 1.4;
+}
+
+/* The segmented control itself reuses the global .segmented-control styles */
+/* We just give this one a max-width to match the time selector */
+#reading-speed-control {
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+/* Inline Validation Error — positioned near controls */
+.validation-error {
+  color: var(--color-incorrect);
+  font-size: var(--font-size-sm);
+  font-family: var(--font-body);
+  text-align: center;
+  min-height: 22px;
+  margin: var(--space-sm) 0 var(--space-md);
+  padding: 0 var(--space-md);
+  letter-spacing: 0.02em;
+}
+
+/* Start Button Container — pushed to bottom */
+.start-button-container {
+  margin-top: auto;
+  padding-top: var(--space-lg);
+  max-width: 420px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+
+.start-btn {
+  width: 100%;
+  min-height: 58px;
+  padding: var(--space-lg) var(--space-xl);
+  background-color: var(--color-primary);
+  color: var(--color-background);
+  border: 3px solid var(--color-primary);
+  border-radius: var(--border-radius-sm);
+  font-family: var(--font-display);
+  font-size: var(--font-size-lg);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  box-shadow: 0 0 14px var(--color-primary), 0 0 28px var(--color-primary);
+  transition: transform var(--transition-speed),
+              box-shadow var(--transition-speed),
+              background-color var(--transition-speed);
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.start-btn:disabled,
+.start-btn[disabled] {
+  opacity: 0.32;
+  pointer-events: none;
+  box-shadow: none;
+  background-color: var(--color-surface);
+  border-color: var(--color-text-muted);
+  color: var(--color-text-muted);
+}
+
+.start-btn:active:not(:disabled) {
+  transform: scale(0.97);
+  box-shadow: 0 0 22px var(--color-primary), 0 0 40px var(--color-primary);
+}
+
+/* Responsive refinements */
+@media (min-width: 620px) {
+  .session-settings-screen {
+    max-width: 580px;
+    margin: 0 auto;
+    padding-top: calc(var(--space-xl) * 1.2);
+  }
+
+  .unit-grid {
+    gap: var(--space-lg);
+  }
+
+  .time-selector {
+    gap: var(--space-lg);
+  }
+}
+
+/* ============================================
+   DECK SELECTION ACCORDION
+   (parity with Options theme accordion)
+   ============================================ */
+
+.deck-panel {
+  margin-bottom: var(--space-xl);
+}
+
+.deck-panel .section-label {
+  font-family: var(--font-display);
+  font-size: var(--font-size-md);
+  color: var(--color-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--space-md);
+  text-align: center;
+}
+
+.accordion-panel {
+  /* header provides the edge */
+}
+
+.accordion-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  min-height: 56px;
+  padding: var(--space-md) var(--space-lg);
+  background: transparent;
+  border: 2px solid var(--color-primary);
+  border-radius: var(--border-radius-sm);
+  color: var(--color-primary);
+  font-family: var(--font-display);
+  font-size: var(--font-size-md);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    transform var(--transition-speed),
+    box-shadow var(--transition-speed),
+    background-color var(--transition-speed),
+    color var(--transition-speed),
+    border-color var(--transition-speed);
+  user-select: none;
+}
+
+.accordion-header:hover {
+  box-shadow: 0 0 10px var(--color-primary);
+}
+
+.accordion-header:active {
+  transform: scale(0.98);
+}
+
+.accordion-header.open {
+  background: var(--color-primary);
+  color: var(--color-background);
+  box-shadow:
+    0 0 12px var(--color-primary),
+    0 0 24px var(--color-primary);
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  margin-bottom: 0;
+}
+
+.accordion-title {
+  flex-shrink: 0;
+  letter-spacing: 0.08em;
+}
+
+.accordion-current {
+  flex: 1;
+  text-align: right;
+  font-size: var(--font-size-sm);
+  opacity: 0.85;
+  letter-spacing: 0.04em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.accordion-header.open .accordion-current {
+  opacity: 0.9;
+}
+
+.accordion-chevron {
+  flex-shrink: 0;
+  font-size: 12px;
+  transition: transform var(--transition-speed);
+  line-height: 1;
+}
+
+.accordion-header.open .accordion-chevron {
+  transform: rotate(180deg);
+}
+
+.accordion-body {
+  border: 2px solid var(--color-primary);
+  border-top: none;
+  border-radius: 0 0 var(--border-radius-sm) var(--border-radius-sm);
+  padding: var(--space-md);
+  background: var(--color-surface);
+  box-shadow: 0 0 10px var(--color-primary);
+}
+
+.accordion-body[hidden] {
+  display: none;
+}
+
+/* Deck option list inside accordion */
+.deck-option-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.deck-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  width: 100%;
+  min-height: 52px;
+  padding: var(--space-md) var(--space-lg);
+  background: transparent;
+  border: 2px solid var(--color-text-muted);
+  border-radius: var(--border-radius-sm);
+  color: var(--color-text);
+  font-family: var(--font-display);
+  font-size: var(--font-size-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    transform var(--transition-speed),
+    border-color var(--transition-speed),
+    box-shadow var(--transition-speed),
+    background-color var(--transition-speed),
+    color var(--transition-speed);
+  user-select: none;
+  text-align: left;
+}
+
+.deck-option:hover {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 8px var(--color-primary);
+}
+
+.deck-option:active {
+  transform: scale(0.98);
+}
+
+.deck-option.selected {
+  border-color: var(--color-accent);
+  background: var(--color-primary);
+  color: var(--color-background);
+  box-shadow:
+    0 0 0 2px var(--color-accent),
+    0 0 14px var(--color-accent);
+}
+
+.deck-option-label {
+  flex: 1;
+}
+
+.deck-option-count {
+  flex-shrink: 0;
+  font-size: var(--font-size-sm);
+  opacity: 0.8;
+  letter-spacing: 0.02em;
+}
+
+.deck-option.selected .deck-option-count {
+  opacity: 0.9;
+}
+
+/* Empty chapters message */
+.empty-chapters {
+  padding: var(--space-md);
+  color: var(--color-text-muted);
+  text-align: center;
+  font-size: var(--font-size-sm);
+}
+
+/* Action bar — ensure vertical stack + centering */
+.action-bar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+  margin-top: auto;
+  padding-top: var(--space-lg);
+}
+
+.action-bar .btn-primary {
+  max-width: 280px;
+  width: auto;
+}
+
+/* Chapter config inherits unit-study-section spacing */
+#chapter-config {
+  margin-bottom: var(--space-xl);
+}
+
+#chapter-config.invalid .unit-grid {
+  /* subtle feedback already handled by validation-error */
+}
+
+
+/* ============================================
+   WORD TYPES PANEL (collapsed 3×3 chip grid)
+   ============================================ */
+
+.type-panel {
+  margin-bottom: var(--space-xl);
+}
+
+.type-panel .section-label {
+  font-family: var(--font-display);
+  font-size: var(--font-size-md);
+  color: var(--color-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--space-md);
+  text-align: center;
+}
+
+.type-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-sm);
+  max-width: 420px;
+  margin: 0 auto var(--space-md);
+}
+
+.type-chip {
+  min-height: 48px;
+  padding: var(--space-sm) var(--space-xs);
+  background-color: var(--color-surface);
+  border: 2px solid var(--color-text-muted);
+  border-radius: var(--border-radius-sm);
+  color: var(--color-text-muted);
+  font-family: var(--font-display);
+  font-size: var(--font-size-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: background-color var(--transition-speed),
+              color var(--transition-speed),
+              border-color var(--transition-speed),
+              box-shadow var(--transition-speed);
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  line-height: 1.15;
+}
+
+.type-chip.selected {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-background);
+  box-shadow: 0 0 10px var(--color-primary);
+}
+
+.type-chip:active {
+  transform: scale(0.97);
+}
+
+.type-actions {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-md);
+  margin-bottom: var(--space-sm);
+}
+
+.type-action-btn {
+  min-height: 40px;
+  padding: var(--space-xs) var(--space-md);
+  background-color: transparent;
+  border: 2px solid var(--color-text-muted);
+  border-radius: var(--border-radius-sm);
+  color: var(--color-text-muted);
+  font-family: var(--font-display);
+  font-size: var(--font-size-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: border-color var(--transition-speed),
+              color var(--transition-speed);
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.type-action-btn:active {
+  transform: scale(0.97);
+}
+
+.type-action-btn:hover,
+.type-action-btn:focus-visible {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+#type-error {
+  text-align: center;
+  min-height: 1.2em;
+}
