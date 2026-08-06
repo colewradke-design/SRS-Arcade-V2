@@ -196,7 +196,7 @@
 
 .result-feedback {
   font-family: var(--font-display);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-md);
   color: var(--color-text);
   line-height: 1.5;
   margin-bottom: var(--space-sm);
@@ -204,13 +204,13 @@
 }
 
 .result-examples {
-  margin-top: var(--space-sm);
+  margin-top: var(--space-md);
   text-align: left;             /* examples list reads better left-aligned */
 }
 
 .examples-label {
   font-family: var(--font-display);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-md);
   color: var(--color-text-muted);
   margin-bottom: var(--space-xs);
   text-align: center;
@@ -256,7 +256,7 @@
 
 .error-msg {
   font-family: var(--font-display);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-size-md);
   color: var(--color-text-muted);
   max-width: 280px;
 }
